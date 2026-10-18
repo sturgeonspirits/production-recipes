@@ -27,9 +27,9 @@ Last updated: 2026-10-18 (America/Chicago)
 - GitHub `main` was published on 2026-10-18 as commit `5250436` (“Release
   production recipe updates”). It contains the batch worksheet, ABV reliability,
   date-handling, status-document, and clearer ABV-label changes.
-- Netlify is **not connected to GitHub** for this project. Its production site
-  was deployed with Netlify Drop, so a GitHub push does not update the live web
-  app automatically.
+- Netlify project **production-recipes** is connected to GitHub. It published
+  `main@5250436` successfully at 5:46 PM on 2026-10-18, so the production site
+  at `production-recipes.netlify.app` includes this release.
 - The live Google Sheets data changes are already active because they use the
   separately deployed Apps Script backend.
 
@@ -42,6 +42,5 @@ push and then a successful Netlify deploy.
 
 ## Next release
 
-Deploy the current front-end folder to Netlify Drop, or connect this Netlify
-project to the GitHub repository and deploy from `main`. Confirm the production
-site after deployment.
+For future front-end releases, push the verified commit to GitHub `main`, then
+confirm the automatic Netlify production deployment.
