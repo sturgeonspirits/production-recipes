@@ -107,10 +107,15 @@ serves the site over HTTPS, credentials and tokens are encrypted in transit.
   password. "Keep me signed in" persists the session on that device.
 - **Recipe list** (`index.html`): search, filter by category or TTB status,
   export the whole catalog to CSV.
-- **Recipe detail** (`recipe.html?id=...`): edit ingredients inline, ABV
-  recalculates live. Two scaling tools:
-  - **Scale batch size** — multiplies every ingredient proportionally to hit a
-    new total volume.
+- **Recipe detail** (`recipe.html?id=...`): edit ingredients inline. The
+  calculated ABV prefers an entered, physical finished-batch size; without one
+  it is an ingredient-volume estimate and is withheld when an alcohol amount,
+  ABV, or unit makes the math incomplete. Gauge the finished batch for an
+  actual result. Tools include:
+  - **Batch worksheet** — multiplies every ingredient proportionally to hit a
+    new total volume. It is always a one-off production version: it never
+    overwrites or saves the base recipe, and shows gallon, quart, pint, cup,
+    fluid-ounce, liter, and milliliter equivalents for the target batch.
   - **Solve for target ABV** — keeps total batch volume fixed, solves for the
     alcohol amount needed, and adjusts the ingredient named "Water" to
     compensate (same math used to bring the RTD recipes to exactly 5.0%).

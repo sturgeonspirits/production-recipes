@@ -35,7 +35,7 @@
 
   <div class="abv-hero">
     <div>
-      <div class="label">Live ABV</div>
+      <div class="label">Production ABV (from recipe)</div>
       <div class="value" id="abv-live">—</div>
     </div>
     <div class="batch">
@@ -55,20 +55,22 @@
   </div>
 
   <details class="section" id="scale-section">
-    <summary>Scale calculator</summary>
+    <summary>Batch worksheet</summary>
     <div class="section-body">
-      <p class="hint" style="margin:0 0 12px">Preview a scaled batch without changing the recipe — the amounts above stay as-is. Scale by batch size, or by one ingredient and everything else follows.</p>
+      <p class="hint" style="margin:0 0 12px">Build a one-off production version at any size. This never changes the saved recipe above. Enter a target batch size, or scale from one ingredient.</p>
       <div class="tool-row">
         <div class="grow"><label>New batch size</label>
           <input type="number" id="scale-size" step="any" inputmode="decimal"></div>
         <div class="grow"><label>Unit</label>
-          <input type="text" id="scale-unit" list="scale-unit-list" autocomplete="off" placeholder="same as recipe">
+          <input type="text" id="scale-unit" list="scale-unit-list" autocomplete="off" placeholder="gal, L, qt, lb…">
           <datalist id="scale-unit-list">
             <option value="mL"></option><option value="L"></option>
             <option value="tsp"></option><option value="tbsp"></option>
             <option value="fl oz"></option><option value="cup"></option>
             <option value="pt"></option><option value="qt"></option>
             <option value="gal"></option>
+            <option value="g"></option><option value="kg"></option>
+            <option value="oz wt"></option><option value="lb"></option>
           </datalist></div>
       </div>
       <div class="tool-divider">or by ingredient</div>
@@ -92,11 +94,8 @@
             <button type="button" data-unit-mode="us">US</button>
           </div>
         </div>
-        <p class="make-units-hint" id="scale-units-hint" hidden>Display only — overwriting keeps the recipe's original units.</p>
+        <p class="make-units-hint" id="scale-units-hint" hidden>Display only — the saved recipe keeps its original units.</p>
         <div id="scale-output" class="scaled-list"></div>
-        <div class="scale-apply-row">
-          <button type="button" class="secondary" id="scale-write-back">Overwrite recipe with these amounts</button>
-        </div>
       </div>
     </div>
   </details>

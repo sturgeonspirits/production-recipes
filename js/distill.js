@@ -28,6 +28,29 @@ window.DISTILL = (function () {
     return isNaN(n) ? null : n;
   }
 
+  // Older records use locale dates such as "8/3/2026". Sorting those as text
+  // puts October before September, so tolerate both legacy dates and ISO.
+  function dateKey(value) {
+    if (value instanceof Date) return isNaN(value.getTime()) ? null : value.getTime();
+    const s = String(value == null ? "" : value).trim();
+    if (!s) return null;
+    let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:$|T)/);
+    // Build a local calendar date. `new Date("YYYY-MM-DD")` is UTC, which
+    // turns into the previous local day in the Americas when a reading time is
+    // attached below.
+    if (m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).getTime();
+    m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (m) return new Date(Number(m[3]), Number(m[1]) - 1, Number(m[2])).getTime();
+    const d = new Date(s);
+    return isNaN(d.getTime()) ? null : d.getTime();
+  }
+
+  function todayISO(d) {
+    d = d || new Date();
+    const pad = n => String(n).padStart(2, "0");
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  }
+
   // Convert a volume+unit to mL. Reuse ABV's converter if loaded, else handle
   // the common distilling units directly.
   function toML(amount, unit) {
@@ -261,9 +284,8 @@ window.DISTILL = (function () {
 
   // ---- Fermentation gravity log helpers (v1.4.0) ----
   function toDate(s) {
-    if (!s) return null;
-    const d = new Date(s);
-    return isNaN(d.getTime()) ? null : d;
+    const key = dateKey(s);
+    return key === null ? null : new Date(key);
   }
 
   // Full timestamp for a reading: reading_date plus reading_time when one is
@@ -332,7 +354,7 @@ window.DISTILL = (function () {
     alcoholML, heartsRecovery, totalRecovery, washABV, suggestCuts, round,
     fermentAsRun, fermentABV, fermentABVInfo, fermentGravities, fermentStatus,
     MAX_PLAUSIBLE_WASH_ABV,
-    toDate, readingTimestamp, sortedReadings, readingSpan,
+    toDate, readingTimestamp, sortedReadings, readingSpan, dateKey, todayISO,
     ML_PER_GALLON, ML_PER_LITER
   };
 })();

@@ -107,6 +107,13 @@
  * denormalized copy of the linked ferment, written on save. The ferment is the
  * source of truth; the copy is what the recovery and cut math reads, so those
  * calculations were left untouched. See CHANGELOG.md.
+ *
+ * v1.22.3 (2026-10-18): production-formula release. The backend now uses the
+ * same safe ABV validation and ingredient-volume model as js/abv.js, including
+ * dried fruit and comma-formatted amounts; batch calculations no longer invent
+ * an ABV from incomplete ingredient data. Recipe-child replacement preserves
+ * unrelated spreadsheet rows and formulas, and newly written production dates
+ * use ISO order. See CHANGELOG.md.
  */
 
 // The one and only database for this webapp. Bind explicitly by ID so the
@@ -280,9 +287,9 @@ function nestReadings_(allReadings, fermentId, legacyRunId) {
       return !!legacyRunId && !r.ferment_id && String(r.run_id) === String(legacyRunId);
     })
     .sort(function (a, b) {
-      const ak = String(a.reading_date) + " " + String(a.reading_time || "");
-      const bk = String(b.reading_date) + " " + String(b.reading_time || "");
-      return ak.localeCompare(bk);
+      const byDate = dateSortKey_(a.reading_date) - dateSortKey_(b.reading_date);
+      if (byDate) return byDate;
+      return String(a.reading_time || "").localeCompare(String(b.reading_time || ""));
     });
 }
 
@@ -334,15 +341,31 @@ function fitRow_(row, width) {
   return out;
 }
 
-// Rewrite a whole tab in one shot: drop every row whose idCol matches idValue,
-// then append newRows. Three Sheets calls (read, clear, write) regardless of how
-// many rows move (v1.15.0).
-//
-// This replaces the old per-row deleteRow/appendRow loops. Row-at-a-time calls
-// are the classic Apps Script bottleneck — each one forces a flush, so a recipe
-// with a dozen ingredients cost two dozen round-trips to the Sheets service.
-// Rows keep their relative order; replaced rows land at the bottom, exactly as
-// the append-based version left them.
+// Accept both the ISO dates written by current clients and older M/D/YYYY
+// cells. Sorting the latter as strings puts October before September.
+function dateSortKey_(value) {
+  if (Object.prototype.toString.call(value) === "[object Date]") {
+    return isNaN(value.getTime()) ? 0 : value.getTime();
+  }
+  const s = String(value == null ? "" : value).trim();
+  if (!s) return 0;
+  let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:$|T)/);
+  if (m) return Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (m) return new Date(Number(m[3]), Number(m[1]) - 1, Number(m[2])).getTime();
+  const parsed = new Date(s).getTime();
+  return isNaN(parsed) ? 0 : parsed;
+}
+
+function sortByDateDesc_(field) {
+  return function (a, b) { return dateSortKey_(b[field]) - dateSortKey_(a[field]); };
+}
+
+// Replace one record's child rows while leaving every unrelated row untouched.
+// The previous clear-and-rewrite approach copied an entire tab for a small edit,
+// discarded blank rows/formulas, and could restore stale data during concurrent
+// saves. Matched rows are normally contiguous because new children are appended;
+// grouping also handles older sheets where they are not.
 function replaceRowsById_(sheet, idValue, idCol, newRows) {
   const values = sheet.getDataRange().getValues();
   if (!values.length) return { error: "empty sheet" };
@@ -351,22 +374,25 @@ function replaceRowsById_(sheet, idValue, idCol, newRows) {
   const col = headers.indexOf(idCol);
   if (col === -1) return { error: "missing column " + idCol };
 
-  const kept = [];
+  const matchingRows = [];
   for (let i = 1; i < values.length; i++) {
-    const row = values[i];
-    if (row.every(function (c) { return c === "" || c === null; })) continue; // drop blanks
-    if (String(row[col]) !== String(idValue)) kept.push(fitRow_(row, width));
+    if (String(values[i][col]) === String(idValue)) matchingRows.push(i + 1);
   }
-  const out = kept.concat((newRows || []).map(function (r) { return fitRow_(r, width); }));
 
-  const lastRow = sheet.getLastRow();
-  if (lastRow > 1) sheet.getRange(2, 1, lastRow - 1, width).clearContent();
-  if (out.length) sheet.getRange(2, 1, out.length, width).setValues(out);
-  return { ok: true, headers: headers, written: out.length };
+  for (let end = matchingRows.length - 1; end >= 0;) {
+    let start = end;
+    while (start > 0 && matchingRows[start - 1] === matchingRows[start] - 1) start--;
+    sheet.deleteRows(matchingRows[start], matchingRows[end] - matchingRows[start] + 1);
+    end = start - 1;
+  }
+
+  const rows = (newRows || []).map(function (r) { return fitRow_(r, width); });
+  if (rows.length) sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, width).setValues(rows);
+  return { ok: true, headers: headers, written: rows.length };
 }
 
-// Generic: delete every row whose idCol matches idValue. Same single-rewrite
-// strategy as replaceRowsById_ — no per-row deleteRow.
+// Generic: delete every row whose idCol matches idValue using the same grouped
+// bottom-up deletion strategy as replaceRowsById_.
 function deleteRowsById_(sheet, idValue, idCol) {
   return replaceRowsById_(sheet, idValue, idCol, []);
 }
@@ -506,12 +532,12 @@ function doGet(e) {
       mash.components = components.filter(c => String(c.mash_id) === String(params.mash));
       mash.runs = runs
         .filter(r => String(r.mash_id) === String(params.mash))
-        .sort((a, b) => String(b.run_date).localeCompare(String(a.run_date)));
+        .sort(sortByDateDesc_("run_date"));
       // v1.21.0: the gravity log and the tweak list hang off the ferment now,
       // not the run. Runs carry only their ferment_id.
       mash.ferments = nestFermentChildren_(
         fermentsForMash_(ferments, mash.runs, params.mash), readings, additions
-      ).sort((a, b) => String(b.start_date).localeCompare(String(a.start_date)));
+      ).sort(sortByDateDesc_("start_date"));
       return jsonOut_(mash);
     }
     if (params.mashes) {
@@ -599,6 +625,8 @@ function findRowByRecipeId_(sheet, recipeId, idColName) {
  * { action: "delete_recipe", recipe_id }
  */
 function doPost(e) {
+  let writeLock = null;
+  let hasWriteLock = false;
   try {
     const body = JSON.parse(e.postData.contents);
     const action = body.action;
@@ -620,6 +648,13 @@ function doPost(e) {
       destroySession_(body.token);
       return jsonOut_({ ok: true });
     }
+
+    // Updating a recipe commonly replaces several child rows. Serialize
+    // authenticated writes so two browser tabs cannot interleave a delete and
+    // append, which previously could bring an older ingredient list back.
+    writeLock = LockService.getScriptLock();
+    writeLock.waitLock(30000);
+    hasWriteLock = true;
 
     if (action === "update_recipe_field") {
       const sheet = getSheet_(RECIPES_SHEET);
@@ -688,15 +723,9 @@ function doPost(e) {
       // capture the recipe row for the changelog before deleting
       const oldRecipe = {};
       found.headers.forEach((h, idx) => { oldRecipe[h] = found.row[idx]; });
-      // remove the recipe's ingredient rows first (bottom-up)
-      const ingSheet = getSheet_(INGREDIENTS_SHEET);
-      const ingValues = ingSheet.getDataRange().getValues();
-      const ingIdCol = ingValues[0].indexOf("recipe_id");
-      for (let i = ingValues.length - 1; i >= 1; i--) {
-        if (String(ingValues[i][ingIdCol]) === String(body.recipe_id)) {
-          ingSheet.deleteRow(i + 1);
-        }
-      }
+      // Remove child rows in grouped operations. One delete per ingredient is
+      // slow on a large recipe book and briefly leaves orphaned rows between calls.
+      deleteRowsById_(getSheet_(INGREDIENTS_SHEET), body.recipe_id, "recipe_id");
       // remove the recipe row itself
       recipesSheet.deleteRow(found.rowIndex);
       logChange_(body.recipe_id, "*delete recipe*", JSON.stringify(oldRecipe), "", "delete_recipe");
@@ -859,6 +888,8 @@ function doPost(e) {
     return jsonOut_({ error: "unknown action " + action });
   } catch (err) {
     return jsonOut_({ error: String(err) });
+  } finally {
+    if (hasWriteLock) writeLock.releaseLock();
   }
 }
 
@@ -988,10 +1019,10 @@ var ML_PER_UNIT_ = {
   pt: 473.176, pint: 473.176, pints: 473.176,
   parts: 1
 };
-var ING_FACTORS_ = { liquid: 1, sugar: 0.53, fruit: 0.55, powder: 0.25, botanical: 0.05 };
+var ING_FACTORS_ = { liquid: 1, sugar: 0.53, fruit: 0.55, driedfruit: 0.06, powder: 0.25, botanical: 0.05 };
 // g/cm3 of the solid itself, for ingredients measured by weight rather than
 // volume. Mass / density is the volume displaced — no bulk-density guesswork.
-var ING_ML_PER_G_ = { liquid: 1.00, sugar: 0.63, fruit: 0.60, powder: 0.71, botanical: 0.02 };
+var ING_ML_PER_G_ = { liquid: 1.00, sugar: 0.63, fruit: 0.60, driedfruit: 0.10, powder: 0.71, botanical: 0.02 };
 var G_PER_UNIT_ = {
   g: 1, gram: 1, grams: 1,
   kg: 1000, kilogram: 1000, kilograms: 1000,
@@ -1005,6 +1036,8 @@ var POWDER_RE_ = /cocoa|cacao|chocolate|powder|malt\b|matcha|\bcorn ?starch|case
 var DRY_FORM_RE_ = /\b(dried|dry|powdered|instant|non-?fat|nonfat|no-?fat|skim(med)?)\b[^,]*\b(milk|cream|buttermilk|whey)\b|\b(milk|cream|buttermilk|whey)\b[^,]*\bpowder\b/i;
 var SOLUBLE_RE_ = /\b(instant|soluble|powdered)\b[^,]*\b(coffee|espresso|tea|chicory)\b|\b(coffee|espresso|tea|chicory)\b[^,]*\b(powder|crystals|granules)\b/i;
 var FRUIT_RE_ = /cherr|berr|fruit|orange|lemon|lime|grape|apple|peach|plum|apricot|mango|pineapple|banana|melon|pear|\bfig|date|raisin|currant|rhubarb/i;
+var DRIED_RE_ = /\b(dried|dehydrated|sun-?dried|freeze-?dried)\b/i;
+var ALWAYS_DRIED_FRUIT_RE_ = /\braisins?\b|\bsultanas?\b|\bprunes?\b|\bdates?\b/i;
 
 function toGrams_(amount, unit) {
   const f = G_PER_UNIT_[String(unit || "").trim().toLowerCase()];
@@ -1030,6 +1063,17 @@ function toML_(amount, unit) {
   const n = Number(String(amount).replace(/,/g, "").trim());
   return isNaN(n) ? null : n * f;
 }
+function isRelativeVolumeUnit_(unit) {
+  return String(unit || "").trim().toLowerCase() === "parts";
+}
+function isAbsoluteVolumeUnit_(unit) {
+  const key = String(unit || "").trim().toLowerCase();
+  return ML_PER_UNIT_[key] !== undefined && key !== "parts";
+}
+function positiveAmount_(value) {
+  const n = Number(String(value == null ? "" : value).replace(/,/g, "").trim());
+  return isFinite(n) && n > 0;
+}
 function guessType_(name) {
   const n = String(name || "");
   if (!n) return "liquid";
@@ -1039,6 +1083,8 @@ function guessType_(name) {
   if (BOTANICAL_RE_.test(n)) return "botanical";
   if (POWDER_RE_.test(n)) return "powder";
   if (SUGAR_RE_.test(n)) return "sugar";
+  if (ALWAYS_DRIED_FRUIT_RE_.test(n)) return "driedfruit";
+  if (DRIED_RE_.test(n) && FRUIT_RE_.test(n)) return "driedfruit";
   if (FRUIT_RE_.test(n)) return "fruit";
   return "liquid";
 }
@@ -1061,20 +1107,69 @@ function isAlcohol_(ing) {
 // hand-typed `abv_percent` column it used to read was frozen at whatever someone
 // entered, drifting from the recipe underneath it.
 //
-// Same precedence as computeABV in js/abv.js: a declared batch size wins,
-// otherwise the modeled finished volume is used.
+// Same safeguards as getABVInfo in js/abv.js. A declared physical batch size
+// wins, but a missing alcohol ABV/unit or mixed "parts" and physical units no
+// longer becomes a plausible-looking number in the recipe list.
 function attachCalcABV_(recipes, ingredientRows) {
   const byRecipe = {};
   (ingredientRows || []).forEach(function (i) {
     (byRecipe[i.recipe_id] = byRecipe[i.recipe_id] || []).push(i);
   });
   recipes.forEach(function (r) {
-    const m = byRecipe[r.recipe_id] ? modelRecipe_(byRecipe[r.recipe_id]) : null;
-    if (!m || !m.volML) { r.abv_calc = ""; return; }
-    const declaredML = toML_(r.batch_size, r.batch_unit);
-    const totalML = declaredML || m.volML;
-    r.abv_calc = Math.round((m.alcML / totalML) * 1000) / 10;
+    const info = getRecipeABVInfo_(r, byRecipe[r.recipe_id] || []);
+    r.abv_calc = info.abv === null ? "" : Math.round(info.abv * 1000) / 10;
   });
+}
+
+function getRecipeABVInfo_(recipe, rows) {
+  const m = modelRecipe_(rows);
+  const blocking = [];
+  const notes = [];
+  let usesParts = false, usesPhysicalMeasure = false;
+  (rows || []).forEach(function (ing, index) {
+    const positive = positiveAmount_(ing.amount);
+    const contribution = contributionML_(ing);
+    const alcohol = isAlcohol_(ing);
+    const abvRaw = ing.abv_percent;
+    const abv = Number(abvRaw);
+    const name = String(ing.ingredient_name || ing.name || ("ingredient " + (index + 1))).trim();
+    if (positive && isRelativeVolumeUnit_(ing.unit)) usesParts = true;
+    if (positive && contribution !== null && !isRelativeVolumeUnit_(ing.unit)) usesPhysicalMeasure = true;
+    if (alcohol && positive) {
+      if (contribution === null) blocking.push(name + " is marked as alcohol but its amount/unit cannot be converted.");
+      if (abvRaw === "" || abvRaw == null || !isFinite(abv) || abv < 0 || abv > 100) {
+        blocking.push(name + " is marked as alcohol but needs an ABV between 0 and 100.");
+      }
+    } else if (!alcohol && positive && isFinite(abv) && abv > 0) {
+      blocking.push(name + " has an ABV but its Alcohol toggle is off.");
+    }
+    if (positive && contribution === null && contributionOf_(ing) > 0.10) {
+      notes.push(name + " is not included in the ingredient-volume estimate.");
+    }
+  });
+  const declaredML = toML_(recipe.batch_size, recipe.batch_unit);
+  const hasDeclaredSize = isFinite(declaredML) && declaredML > 0;
+  const relativeBatch = isRelativeVolumeUnit_(recipe.batch_unit);
+  const mixed = usesParts && usesPhysicalMeasure;
+  let basis = "model", totalML = m ? m.volML : null;
+  if (hasDeclaredSize && isAbsoluteVolumeUnit_(recipe.batch_unit)) {
+    basis = "declared";
+    totalML = declaredML;
+  } else if (hasDeclaredSize && relativeBatch && !mixed && usesParts) {
+    basis = "relative";
+    totalML = declaredML;
+  }
+  if (mixed && basis !== "declared") blocking.push("Parts cannot be mixed with physical volume or weight units for a calculated ABV.");
+  if (basis === "declared" && usesParts && (rows || []).some(function (ing) {
+    return isAlcohol_(ing) && positiveAmount_(ing.amount) && isRelativeVolumeUnit_(ing.unit);
+  })) {
+    blocking.push("An alcohol ingredient is recorded in parts, so its ethanol volume cannot be compared with the finished batch size.");
+  }
+  if (basis === "model" && notes.length) blocking.push("The ingredient-volume estimate is incomplete.");
+  if (!m || !m.volML || !isFinite(totalML) || totalML <= 0) {
+    blocking.push("Add a finished batch size or convertible ingredient amounts before calculating ABV.");
+  }
+  return { abv: blocking.length ? null : (m.alcML / totalML) * 100, basis: basis, blockingIssues: blocking, notes: notes };
 }
 
 // Modeled finished volume and pure-ethanol volume for one recipe's ingredients.

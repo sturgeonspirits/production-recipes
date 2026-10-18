@@ -26,7 +26,8 @@
   });
 
   function latestRun(m) {
-    const runs = (m.runs || []).slice().sort((a, b) => String(b.run_date).localeCompare(String(a.run_date)));
+    const runs = (m.runs || []).slice().sort((a, b) =>
+      (window.DISTILL.dateKey(b.run_date) || 0) - (window.DISTILL.dateKey(a.run_date) || 0));
     return runs[0] || null;
   }
 
@@ -85,7 +86,7 @@
     const slug = "mash_" + name.trim().toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "") + "_" + Date.now().toString(36);
     newBtn.disabled = true;
     try {
-      const today = new Date().toLocaleDateString("en-US");
+      const today = window.DISTILL.todayISO();
       await window.API.addMash({ mash_id: slug, name: name.trim(), created_date: today });
       location.href = "mash.html?id=" + encodeURIComponent(slug);
     } catch (err) {

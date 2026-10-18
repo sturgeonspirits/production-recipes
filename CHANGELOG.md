@@ -3,6 +3,25 @@
 All notable changes to this project are logged here. Each code file also
 carries a one-line version header at the top pointing back to this file.
 
+## v1.22.3 - 2026-10-18
+- **Batch worksheet replaces the scale calculator.** Scaling now produces a
+  clearly non-destructive production version; there is no longer an option to
+  overwrite the stored formula. Target batches show gallon, quart, pint, cup,
+  fluid-ounce, liter, and milliliter equivalents.
+- **Calculated ABV now fails safely instead of guessing.** The app withholds a
+  number when an alcohol ingredient has no usable amount/unit or ABV, when an
+  ingredient has an ABV but its Alcohol toggle is off, or when relative
+  `parts` are mixed with physical units. A measured finished-batch size remains
+  the preferred denominator; otherwise the app names the result as an
+  ingredient estimate and warns when it differs materially from that size.
+- Browser and Apps Script now share the dried-fruit model and ABV validation;
+  the parity test includes 3,000 generated recipes and focused unsafe-input
+  cases. Comma-formatted amounts are accepted consistently.
+- **Dates sort by date, not text.** Legacy `M/D/YYYY` records and current ISO
+  dates now order correctly in ferment and run views, and new records use ISO.
+- Replacing a recipe's child rows no longer clears and rewrites the entire
+  spreadsheet tab, preserving unrelated blank rows/formulas and reducing work.
+
 ## v1.22.2 - 2026-08-23
 - **Fix: the scale calculator returned nothing on recipes with no batch size.**
   Typing a target size produced an empty list and the message "Units must match

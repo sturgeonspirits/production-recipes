@@ -8,7 +8,7 @@
 window.ABV = (function () {
   // mL per 1 unit, for volume units only
   const ML_PER_UNIT = {
-    ml: 1, mL: 1, milliliter: 1, milliliters: 1,
+    ml: 1, mL: 1, milliliter: 1, milliliters: 1, millilitre: 1, millilitres: 1,
     l: 1000, liter: 1000, liters: 1000,
     cup: 236.588, cups: 236.588,
     tbsp: 14.7868, tbs: 14.7868, tablespoon: 14.7868, tablespoons: 14.7868,
@@ -25,11 +25,24 @@ window.ABV = (function () {
     return Object.prototype.hasOwnProperty.call(ML_PER_UNIT, String(unit).trim().toLowerCase());
   }
 
+  // "parts" is useful for preserving a ratio, but it is not a physical volume.
+  // Do not let a recipe that mixes 1 part of spirit with 500 mL of juice pretend
+  // that the part is 1 mL.  That used to produce a precise-looking ABV from
+  // incompatible units.
+  function isAbsoluteVolumeUnit(unit) {
+    return isVolumeUnit(unit) && String(unit).trim().toLowerCase() !== "parts";
+  }
+
+  function isRelativeVolumeUnit(unit) {
+    return String(unit || "").trim().toLowerCase() === "parts";
+  }
+
   function toML(amount, unit) {
     const key = String(unit || "").trim().toLowerCase();
     const factor = ML_PER_UNIT[key];
     if (factor === undefined) return null; // not a volume unit -- can't convert
-    return Number(amount) * factor;
+    const n = numberValue(amount);
+    return isNaN(n) ? null : n * factor;
   }
 
   function fromML(ml, unit) {
@@ -149,7 +162,7 @@ window.ABV = (function () {
   function toGrams(amount, unit) {
     const f = G_PER_UNIT[String(unit || "").trim().toLowerCase()];
     if (f === undefined) return null;
-    const n = Number(amount);
+    const n = numberValue(amount);
     return isNaN(n) ? null : n * f;
   }
 
@@ -184,7 +197,7 @@ window.ABV = (function () {
   function totalAlcoholML_(recipe) {
     let alcoholML = 0;
     (recipe.ingredients || []).forEach(ing => {
-      if (!ing.is_alcohol) return;
+      if (!isAlcoholIngredient(ing)) return;
       // Ethanol rides on the liquid's own volume, so a weighed alcohol uses the
       // same displaced-volume figure the model uses for everything else.
       const v = contributionML(ing);
@@ -194,21 +207,135 @@ window.ABV = (function () {
     return alcoholML;
   }
 
-  // Compute ABV of a recipe. A declared (measured) batch size wins; otherwise
-  // the total is modeled from ingredient volume contributions.
+  function numberValue(value) {
+    const n = Number(String(value == null ? "" : value).replace(/,/g, "").trim());
+    return n;
+  }
+
+  function positiveAmount(value) {
+    const n = numberValue(value);
+    return isFinite(n) && n > 0;
+  }
+
+  function ingredientName(ing, fallback) {
+    return String(ing.name || ing.ingredient_name || fallback || "ingredient").trim();
+  }
+
+  // Values from the spreadsheet arrive as strings, while edited rows in the
+  // browser are booleans. Treat both forms the same; importantly, the string
+  // "no" must not be truthy just because it is non-empty.
+  function isAlcoholIngredient(ing) {
+    const value = ing && ing.is_alcohol;
+    if (value === true) return true;
+    return ["yes", "true", "y", "1"].includes(String(value || "").trim().toLowerCase());
+  }
+
+  // Return the basis and any conditions that make a recipe-derived ABV unsafe
+  // to show. A real finished-batch measurement is better than the ingredient
+  // volume model, but the ethanol side still has to be complete and measurable.
+  function getABVInfo(recipe) {
+    const ingredients = recipe.ingredients || [];
+    const blockingIssues = [];
+    const notes = [];
+    let modeledML = 0, alcoholML = 0, hasModeledVolume = false;
+    let usesParts = false, usesPhysicalMeasure = false;
+
+    ingredients.forEach((ing, index) => {
+      const amountIsPositive = positiveAmount(ing.amount);
+      const contribution = contributionML(ing);
+      const name = ingredientName(ing, `ingredient ${index + 1}`);
+      const alcohol = isAlcoholIngredient(ing);
+      const abvRaw = ing.abv_percent;
+      const abv = Number(abvRaw);
+
+      if (amountIsPositive && isRelativeVolumeUnit(ing.unit)) usesParts = true;
+      if (amountIsPositive && contribution !== null && !isRelativeVolumeUnit(ing.unit)) {
+        usesPhysicalMeasure = true;
+      }
+      if (contribution !== null) {
+        modeledML += contribution;
+        hasModeledVolume = true;
+        if (alcohol) alcoholML += contribution * ((isFinite(abv) ? abv : 0) / 100);
+      }
+
+      if (alcohol && amountIsPositive) {
+        if (contribution === null) {
+          blockingIssues.push(`${name} is marked as alcohol but its amount/unit cannot be converted.`);
+        }
+        if (abvRaw === "" || abvRaw == null || !isFinite(abv) || abv < 0 || abv > 100) {
+          blockingIssues.push(`${name} is marked as alcohol but needs an ABV between 0 and 100.`);
+        }
+      } else if (!alcohol && amountIsPositive && isFinite(abv) && abv > 0) {
+        blockingIssues.push(`${name} has an ABV but its Alcohol toggle is off.`);
+      }
+
+      // A fruit, sugar, powder, or liquid outside the conversion model leaves
+      // the modeled denominator incomplete. Botanicals measured "each" are
+      // intentionally allowed because their default contribution is negligible.
+      if (amountIsPositive && contribution === null && contributionOf(ing) > 0.10) {
+        notes.push(`${name} is not included in the ingredient-volume estimate.`);
+      }
+    });
+
+    const declaredML = toML(recipe.batch_size, recipe.batch_unit);
+    const hasDeclaredSize = isFinite(declaredML) && declaredML > 0;
+    const relativeBatch = isRelativeVolumeUnit(recipe.batch_unit);
+    const mixedRelativeAndPhysical = usesParts && usesPhysicalMeasure;
+
+    let basis = "model", totalML = modeledML;
+    if (hasDeclaredSize && isAbsoluteVolumeUnit(recipe.batch_unit)) {
+      basis = "declared";
+      totalML = declaredML;
+    } else if (hasDeclaredSize && relativeBatch && !mixedRelativeAndPhysical && usesParts) {
+      basis = "relative";
+      totalML = declaredML;
+    }
+
+    if (mixedRelativeAndPhysical && basis !== "declared") {
+      blockingIssues.push("Parts cannot be mixed with physical volume or weight units for a calculated ABV.");
+    }
+    if (basis === "declared" && usesParts && ingredients.some(ing => isAlcoholIngredient(ing) && positiveAmount(ing.amount) && isRelativeVolumeUnit(ing.unit))) {
+      blockingIssues.push("An alcohol ingredient is recorded in parts, so its ethanol volume cannot be compared with the finished batch size.");
+    }
+    if (basis === "model" && notes.length) {
+      blockingIssues.push("The ingredient-volume estimate is incomplete.");
+    }
+    if (!hasModeledVolume || !isFinite(totalML) || totalML <= 0) {
+      blockingIssues.push("Add a finished batch size or convertible ingredient amounts before calculating ABV.");
+    }
+
+    return {
+      abv: blockingIssues.length ? null : (alcoholML / totalML) * 100,
+      basis,
+      declaredML: hasDeclaredSize ? declaredML : null,
+      modeledML: hasModeledVolume ? modeledML : null,
+      alcoholML,
+      blockingIssues,
+      notes,
+    };
+  }
+
+  function volumeMeasureFamily(ingredients) {
+    let hasParts = false, hasPhysical = false;
+    (ingredients || []).forEach(ing => {
+      if (!positiveAmount(ing.amount) || contributionML(ing) === null) return;
+      if (isRelativeVolumeUnit(ing.unit)) hasParts = true;
+      else hasPhysical = true;
+    });
+    return { hasParts, hasPhysical, mixed: hasParts && hasPhysical };
+  }
+
+  // Compute ABV of a recipe. A declared, physical finished-batch size wins;
+  // otherwise use a complete ingredient-volume estimate. See getABVInfo for
+  // the basis and reasons a result is withheld.
   function computeABV(recipe) {
-    let totalML = toML(recipe.batch_size, recipe.batch_unit);
-    if (totalML === null || !totalML) totalML = estimateFinalVolumeML(recipe);
-    if (!totalML) return null;
-    return (totalAlcoholML_(recipe) / totalML) * 100;
+    return getABVInfo(recipe).abv;
   }
 
   // ABV strictly from the ingredient model, ignoring any declared batch size —
   // shown alongside so a stale/optimistic batch size is easy to spot.
   function computeModeledABV(recipe) {
-    const totalML = estimateFinalVolumeML(recipe);
-    if (!totalML) return null;
-    return (totalAlcoholML_(recipe) / totalML) * 100;
+    return getABVInfo({ ...recipe, batch_size: "", batch_unit: "" }).abv;
   }
 
   // Proportional scale: every ingredient amount (and the batch size) is multiplied
@@ -226,6 +353,9 @@ window.ABV = (function () {
   function scaleToBatchSize(recipe, newSize, newUnit) {
     const currentML = toML(recipe.batch_size, recipe.batch_unit);
     const targetML = toML(newSize, newUnit || recipe.batch_unit);
+    if (isRelativeVolumeUnit(recipe.batch_unit) !== isRelativeVolumeUnit(newUnit || recipe.batch_unit)) {
+      throw new Error("Parts can only be scaled to parts; they cannot be converted to a physical batch volume.");
+    }
     if (!currentML || !targetML) {
       throw new Error("Both the current and target batch size need to be in a convertible volume unit (mL, cups, oz, gal, etc).");
     }
@@ -244,24 +374,41 @@ window.ABV = (function () {
     if (!totalML) throw new Error("Recipe needs a batch size in a convertible volume unit to solve for target ABV.");
 
     const ingredients = (recipe.ingredients || []).map(i => ({ ...i }));
-    const alcoholIdx = ingredients.findIndex(i => i.is_alcohol);
+    const alcoholIdx = ingredients.findIndex(isAlcoholIngredient);
     if (alcoholIdx === -1) throw new Error("No alcohol ingredient found in this recipe to adjust.");
     const waterIdx = ingredients.findIndex(i => /^water$/i.test(String(i.name).trim()));
+    const relativeBatch = isRelativeVolumeUnit(recipe.batch_unit);
+    const spiritUnit = ingredients[alcoholIdx].unit;
+    if (relativeBatch ? !isRelativeVolumeUnit(spiritUnit) : !isAbsoluteVolumeUnit(spiritUnit)) {
+      throw new Error("The alcohol ingredient needs the same kind of unit as the batch size (all parts, or a physical volume) to solve safely.");
+    }
+    if (waterIdx !== -1) {
+      const waterUnit = ingredients[waterIdx].unit;
+      if (relativeBatch ? !isRelativeVolumeUnit(waterUnit) : !isAbsoluteVolumeUnit(waterUnit)) {
+        throw new Error("Water needs the same kind of unit as the batch size (all parts, or a physical volume) to solve safely.");
+      }
+    }
+    if (volumeMeasureFamily(ingredients).mixed) {
+      throw new Error("Parts cannot be mixed with physical volume or weight units when solving target ABV.");
+    }
 
     const spiritABV = Number(ingredients[alcoholIdx].abv_percent) || 0;
     if (!spiritABV) throw new Error("The alcohol ingredient needs an ABV% set before solving.");
 
     const currentSpiritML = toML(ingredients[alcoholIdx].amount, ingredients[alcoholIdx].unit);
+    if (currentSpiritML === null) throw new Error("The alcohol ingredient needs a convertible amount before solving.");
     const targetSpiritML = (targetABVPercent / 100) * totalML / (spiritABV / 100);
     const deltaML = targetSpiritML - currentSpiritML;
 
     // write back the new spirit amount, in its original unit
     const newSpiritAmount = fromML(targetSpiritML, ingredients[alcoholIdx].unit);
+    if (newSpiritAmount === null) throw new Error("The alcohol ingredient needs a convertible volume unit before solving.");
     ingredients[alcoholIdx].amount = round4(newSpiritAmount);
 
     let warning = "";
     if (waterIdx !== -1) {
       const currentWaterML = toML(ingredients[waterIdx].amount, ingredients[waterIdx].unit);
+      if (currentWaterML === null) throw new Error("Water needs a convertible amount before solving.");
       const newWaterML = currentWaterML - deltaML;
       if (newWaterML < 0) throw new Error("Not enough water in this recipe to absorb that much extra spirit -- try a lower target ABV.");
       ingredients[waterIdx].amount = round4(fromML(newWaterML, ingredients[waterIdx].unit));
@@ -283,7 +430,7 @@ window.ABV = (function () {
   // real production step of pouring spirit into a finished non-alcoholic mix.
   function solveAddAlcohol(recipe, targetABVPercent) {
     const ingredients = (recipe.ingredients || []).map(i => ({ ...i }));
-    const alcoholIdx = ingredients.findIndex(i => i.is_alcohol);
+    const alcoholIdx = ingredients.findIndex(isAlcoholIngredient);
     if (alcoholIdx === -1) throw new Error("No alcohol ingredient found in this recipe to solve for -- add one and check its Alcohol toggle.");
     const spirit = ingredients[alcoholIdx];
     const spiritABV = Number(spirit.abv_percent) || 0;
@@ -291,6 +438,11 @@ window.ABV = (function () {
     const target = Number(targetABVPercent);
     if (!target) throw new Error("Enter a target ABV.");
     if (target >= spiritABV) throw new Error("Target ABV must be lower than the added alcohol's ABV%.");
+    const family = volumeMeasureFamily(ingredients.filter((_, idx) => idx !== alcoholIdx));
+    if (family.mixed || (family.hasParts && !isRelativeVolumeUnit(spirit.unit)) ||
+        (family.hasPhysical && !isAbsoluteVolumeUnit(spirit.unit))) {
+      throw new Error("Use all parts or physical volume units consistently before solving added alcohol.");
+    }
 
     // Effective volume + ethanol already contributed by every OTHER ingredient
     // (the base mix) -- reuses the same type/Vol.% contribution model as the
@@ -301,7 +453,7 @@ window.ABV = (function () {
       const v = toML(ing.amount, ing.unit);
       if (v === null) return;
       baseML += v * contributionOf(ing);
-      if (ing.is_alcohol) baseAlcoholML += v * ((Number(ing.abv_percent) || 0) / 100);
+      if (isAlcoholIngredient(ing)) baseAlcoholML += v * ((Number(ing.abv_percent) || 0) / 100);
     });
     if (!baseML) throw new Error("Add the base-mix ingredients (cider, juice, sugar, etc.) with amounts first.");
 
@@ -331,12 +483,18 @@ window.ABV = (function () {
     const idx = Number(diluentIdx);
     const diluent = ingredients[idx];
     if (!diluent) throw new Error("Choose which ingredient to add.");
-    if (diluent.is_alcohol) throw new Error("Pick a non-alcoholic ingredient to dilute with.");
+    if (isAlcoholIngredient(diluent)) throw new Error("Pick a non-alcoholic ingredient to dilute with.");
     if (!isVolumeUnit(diluent.unit)) {
       throw new Error("The ingredient you're adding needs a convertible volume unit (mL, oz, cups, gal…).");
     }
     const target = Number(targetABVPercent);
     if (!target) throw new Error("Enter a target ABV.");
+    const family = volumeMeasureFamily(ingredients);
+    if (family.mixed) throw new Error("Parts cannot be mixed with physical volume or weight units when diluting.");
+    if ((family.hasParts && !isRelativeVolumeUnit(diluent.unit)) ||
+        (family.hasPhysical && !isAbsoluteVolumeUnit(diluent.unit))) {
+      throw new Error("The diluent needs the same kind of unit as the rest of the batch (all parts, or a physical volume).");
+    }
 
     // Everything except the diluent is fixed; the diluent's CURRENT amount is
     // part of that base too — we're solving for how much MORE to add.
@@ -345,7 +503,7 @@ window.ABV = (function () {
       const v = toML(ing.amount, ing.unit);
       if (v === null) return;
       baseML += v * contributionOf(ing);
-      if (ing.is_alcohol) baseAlcoholML += v * ((Number(ing.abv_percent) || 0) / 100);
+      if (isAlcoholIngredient(ing)) baseAlcoholML += v * ((Number(ing.abv_percent) || 0) / 100);
     });
     if (!baseML) throw new Error("Add the recipe's ingredients with amounts first.");
     if (!baseAlcoholML) throw new Error("This recipe has no alcohol to dilute.");
@@ -403,10 +561,10 @@ window.ABV = (function () {
   function round4(n) { return Math.round(n * 10000) / 10000; }
 
   return {
-    ML_PER_UNIT, isVolumeUnit, toML, fromML,
+    ML_PER_UNIT, isVolumeUnit, isAbsoluteVolumeUnit, isRelativeVolumeUnit, toML, fromML,
     ING_TYPES, guessIngredientType, contributionOf, contributionML,
     isWeightUnit, toGrams, estimateFinalVolumeML,
-    computeABV, computeModeledABV, scaleByFactor, scaleToBatchSize,
+    getABVInfo, computeABV, computeModeledABV, scaleByFactor, scaleToBatchSize,
     solveForTargetABV, solveAddAlcohol, solveAddDiluent,
     ABV_TOLERANCE, abvCompliance
   };

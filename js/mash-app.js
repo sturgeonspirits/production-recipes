@@ -59,6 +59,9 @@
     return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
   function fmt(n, dp) { const r = D.round(n, dp); return r === null ? "—" : String(r); }
+  function sortDateDesc(field) {
+    return (a, b) => (D.dateKey(b[field]) || 0) - (D.dateKey(a[field]) || 0);
+  }
 
   // ---------- Header + field population ----------
   document.getElementById("mash-title").textContent = mash.name || "Mash Recipe";
@@ -298,8 +301,7 @@
       renderFermentCompare();
       return;
     }
-    const sorted = mash.ferments.slice().sort((a, b) =>
-      String(normDate(b.start_date)).localeCompare(String(normDate(a.start_date))));
+    const sorted = mash.ferments.slice().sort(sortDateDesc("start_date"));
 
     fermentsBody.innerHTML = sorted.map(f => {
       const g = D.fermentGravities(f);
@@ -373,8 +375,7 @@
     if (section) section.style.display = "";
     countEl.textContent = `(${mash.ferments.length})`;
 
-    const sorted = mash.ferments.slice().sort((a, b) =>
-      String(normDate(b.start_date)).localeCompare(String(normDate(a.start_date))));
+    const sorted = mash.ferments.slice().sort(sortDateDesc("start_date"));
 
     // Populate the tweak-highlight dropdown with the distinct items used.
     const items = Array.from(new Set(
@@ -652,7 +653,7 @@
   $("add-reading").addEventListener("click", () => {
     const last = currentReadings[currentReadings.length - 1];
     currentReadings.push({
-      reading_date: (last && last.reading_date) || new Date().toLocaleDateString("en-US"),
+      reading_date: (last && last.reading_date) || D.todayISO(),
       reading_time: "", gravity: "", temp: "", ph: "", notes: ""
     });
     renderReadings();
@@ -769,7 +770,7 @@
 
     if (!fermentId) {
       // Seed a new ferment from the recipe so the common case is one tap.
-      $("fm-start-date").value = new Date().toLocaleDateString("en-US");
+      $("fm-start-date").value = D.todayISO();
       $("fm-volume-unit").value = mash.volume_unit || "L";
       $("fm-batch-volume").value = mash.batch_volume || "";
       $("fm-yeast-strain").value = mash.yeast_strain || "";
@@ -900,7 +901,7 @@
       renderRunCompare();
       return;
     }
-    const sorted = mash.runs.slice().sort((a, b) => String(b.run_date).localeCompare(String(a.run_date)));
+    const sorted = mash.runs.slice().sort(sortDateDesc("run_date"));
     runsBody.innerHTML = sorted.map(r0 => {
       const run = runLive(r0);
       const washAbv = D.washABV(run);
@@ -951,7 +952,7 @@
     if (section) section.style.display = "";
     countEl.textContent = `(${mash.runs.length})`;
 
-    const sorted = mash.runs.slice().sort((a, b) => String(b.run_date).localeCompare(String(a.run_date)));
+    const sorted = mash.runs.slice().sort(sortDateDesc("run_date"));
     const rows = sorted.map(r0 => {
       const run = runLive(r0);
       const f = fermentById(run.ferment_id);
@@ -1002,7 +1003,7 @@
     const keep = sel.value;
     const list = mash.ferments
       .filter(f => f.ferment_id && !f.synthetic)
-      .sort((a, b) => String(normDate(b.start_date)).localeCompare(String(normDate(a.start_date))));
+      .sort(sortDateDesc("start_date"));
     sel.innerHTML = `<option value="">— no ferment linked —</option>` +
       list.map(f => {
         const g = D.fermentGravities(f);
@@ -1129,13 +1130,13 @@
     // Backend date cells come back as raw datetime strings — show them cleanly.
     ["r-run-date", "r-barrel-date"].forEach(dom => { $(dom).value = normDate($(dom).value); });
     if (!runId) {
-      if (!$("r-run-date").value) $("r-run-date").value = new Date().toLocaleDateString("en-US");
+      if (!$("r-run-date").value) $("r-run-date").value = D.todayISO();
       if (!$("r-volume-unit").value) $("r-volume-unit").value = mash.volume_unit || "L";
       // Default to the most recent ferment that hasn't been distilled yet —
       // usually exactly the one you just finished.
       const ready = mash.ferments
         .filter(f => f.ferment_id && !f.synthetic && D.fermentStatus(f) !== "dumped")
-        .sort((a, b) => String(normDate(b.start_date)).localeCompare(String(normDate(a.start_date))));
+      .sort(sortDateDesc("start_date"));
       const pick = ready.find(f => !runsForFerment(f.ferment_id).length) || ready[0];
       if (pick) $("r-ferment").value = pick.ferment_id;
     }

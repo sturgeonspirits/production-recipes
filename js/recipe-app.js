@@ -31,7 +31,7 @@
     return {
       ...i,
       name,
-      is_alcohol: i.is_alcohol === true || i.is_alcohol === "yes" || i.is_alcohol === "TRUE",
+      is_alcohol: i.is_alcohol === true || ["yes", "true", "y", "1"].includes(String(i.is_alcohol || "").trim().toLowerCase()),
       // Volume model: type defaults from the name; blank contribution = use type default.
       ing_type: i.ing_type && window.ABV.ING_TYPES[i.ing_type] ? i.ing_type : window.ABV.guessIngredientType(name),
       volume_contribution: i.volume_contribution === 0 || i.volume_contribution ? i.volume_contribution : ""
@@ -184,9 +184,15 @@
   }
 
   function updateABV() {
-    recipe.batch_size = Number(document.getElementById("f-batch-size").value) || recipe.batch_size;
-    recipe.batch_unit = document.getElementById("f-batch-unit").value || recipe.batch_unit;
-    const abv = window.ABV.computeABV(recipe);
+    const batchSizeField = document.getElementById("f-batch-size");
+    const batchUnitField = document.getElementById("f-batch-unit");
+    // Clearing a stale batch size must actually clear the calculation basis;
+    // restoring the previous value made it impossible to fall back to the
+    // ingredient estimate while editing a recipe.
+    recipe.batch_size = batchSizeField.value === "" ? "" : Number(batchSizeField.value);
+    recipe.batch_unit = batchUnitField.value.trim();
+    const abvInfo = window.ABV.getABVInfo(recipe);
+    const abv = abvInfo.abv;
     const el = document.getElementById("abv-live");
     el.textContent = (abv === null || isNaN(abv)) ? "—" : abv.toFixed(2) + "%";
     document.getElementById("abv-warning").textContent = recipe._targetAbvWarning || "";
@@ -195,18 +201,24 @@
     // When a batch size is entered the hero uses it, so a big gap between the
     // two numbers means the declared batch size is off (or the model needs tuning).
     const hintEl = document.getElementById("abv-model-hint");
-    const estML = window.ABV.estimateFinalVolumeML(recipe);
+    const estML = abvInfo.modeledML;
     const modeled = window.ABV.computeModeledABV(recipe);
     if (estML && modeled !== null && !isNaN(modeled)) {
-      const declaredML = window.ABV.toML(recipe.batch_size, recipe.batch_unit);
-      let txt = `Ingredient model: ~${modeled.toFixed(1)}% ABV · est. final volume ${Math.round(estML)} mL`;
+      const declaredML = window.ABV.isAbsoluteVolumeUnit(recipe.batch_unit)
+        ? window.ABV.toML(recipe.batch_size, recipe.batch_unit) : null;
+      let txt = abvInfo.basis === "declared"
+        ? `Calculated ABV uses your entered finished-batch size. Ingredient model: ~${modeled.toFixed(1)}% ABV · est. final volume ${Math.round(estML)} mL`
+        : `Ingredient estimate: ~${modeled.toFixed(1)}% ABV · est. final volume ${Math.round(estML)} mL`;
       if (declaredML && Math.abs(declaredML - estML) / estML > 0.10) {
-        txt += ` — differs from your batch size (${Math.round(declaredML)} mL); the big number uses the batch size.`;
+        txt += ` — differs from the entered batch size (${Math.round(declaredML)} mL). Gauge the finished batch to confirm.`;
       }
+      if (abvInfo.notes.length) txt += ` — ${abvInfo.notes.join(" ")}`;
+      if (abvInfo.blockingIssues.length) txt += ` — Can’t calculate: ${abvInfo.blockingIssues.join(" ")}`;
       hintEl.textContent = txt;
       hintEl.hidden = false;
     } else {
-      hintEl.hidden = true;
+      hintEl.textContent = abvInfo.blockingIssues.join(" ");
+      hintEl.hidden = !hintEl.textContent;
     }
     renderReconcile();     // calculated vs label vs tested
     renderScalePreview();  // keep the scale-calculator preview in sync with edits
@@ -215,8 +227,8 @@
 
   // ===== Calculated vs label vs tested =====
   // Three different numbers that all get called "the ABV":
-  //   calculated — what the ingredients imply
-  //   label      — what the approved COLA declares
+  //   production — what the saved ingredient formula makes
+  //   approved   — what the formula/label record declares
   //   tested     — what the batch actually gauged at
   // Only the tested-vs-label gap is a compliance question; a calculated figure
   // that disagrees is a recipe-accuracy signal, not a violation.
@@ -242,10 +254,10 @@
     const parts = [];
     if (ttbABV !== "") {
       const srcTag = source ? ` <span class="rec-src">${source === "both" ? "formula + label" : source}</span>` : "";
-      parts.push(`<span class="rec-item">TTB <b>${Number(ttbABV).toFixed(1)}%</b>${srcTag}</span>`);
+      parts.push(`<span class="rec-item">Approved ABV <b>${Number(ttbABV).toFixed(1)}%</b>${srcTag}</span>`);
     }
     if (testedABV !== "") parts.push(`<span class="rec-item">Tested <b>${Number(testedABV).toFixed(1)}%</b></span>`);
-    if (calc !== null && !isNaN(calc)) parts.push(`<span class="rec-item">Calculated <b>${calc.toFixed(1)}%</b></span>`);
+    if (calc !== null && !isNaN(calc)) parts.push(`<span class="rec-item">Production formula <b>${calc.toFixed(1)}%</b></span>`);
 
     let verdict = "", cls = "";
     const testedCmp = window.ABV.abvCompliance(testedABV, ttbABV);
@@ -265,7 +277,7 @@
       const calcCmp = window.ABV.abvCompliance(calc, ttbABV);
       if (calcCmp && !calcCmp.within) {
         cls = "warn";
-        verdict = `The recipe calculates to ${Math.abs(calcCmp.delta).toFixed(1)} points ${calcCmp.delta > 0 ? "above" : "below"} the ${what}. Gauge a batch to confirm, or use Target ABV to bring the recipe onto ${Number(ttbABV).toFixed(1)}%.`;
+        verdict = `The production formula is ${Math.abs(calcCmp.delta).toFixed(1)} points ${calcCmp.delta > 0 ? "above" : "below"} the ${what}. Gauge a batch to confirm, or use Target ABV to bring the recipe onto ${Number(ttbABV).toFixed(1)}%.`;
       }
     }
 
@@ -304,19 +316,34 @@
     factorLabel: document.getElementById("scale-factor-label"),
     output: document.getElementById("scale-output"),
     clear: document.getElementById("scale-clear"),
-    writeBack: document.getElementById("scale-write-back"),
     unitBtns: document.getElementById("scale-unit-btns"),
     unitsHint: document.getElementById("scale-units-hint"),
   };
-  // Display units for the preview list only. Never written back — "Overwrite
-  // recipe" copies the recipe's own units, same rule as Make mode.
+  // Display units for the worksheet only. A scaled worksheet never changes the
+  // saved recipe, just like Make mode.
   let scaleUnitMode = "as-written";
   let scaleMode = null;        // "size" | "ingredient" | null
-  let lastScaled = null;       // last previewed result, for optional write-back
 
   function fmtAmt(n) {
     if (n === "" || n == null || isNaN(n)) return "";
     return String(Math.round(Number(n) * 1000) / 1000);
+  }
+
+  // Show the finished-batch target in the measures a distiller is most likely
+  // to need. Ingredient rows still use the selected display mode below: a
+  // tablespoon of extract is more useful as tablespoons than as 0.004 gallons.
+  function batchEquivalents(amount, unit) {
+    const ml = window.ABV.toML(amount, unit);
+    if (!isFinite(ml) || ml <= 0 || !window.ABV.isAbsoluteVolumeUnit(unit)) return "";
+    const measures = [
+      ["gal", "gal"], ["qt", "qt"], ["pt", "pt"], ["cups", "cups"],
+      ["fl oz", "fl oz"], ["L", "L"], ["mL", "mL"]
+    ];
+    const sourceFactor = window.ABV.toML(1, unit);
+    return measures
+      .filter(([, label]) => window.ABV.toML(1, label) !== sourceFactor)
+      .map(([, label]) => `${fmtAmt(window.ABV.fromML(ml, label))} ${label}`)
+      .join(" · ");
   }
 
   function populateScaleIngredients() {
@@ -389,23 +416,23 @@
 
   function renderScalePreview() {
     const res = computeScaleFactor();
-    if (!res) { scaleUI.result.hidden = true; lastScaled = null; return; }
+    if (!res) { scaleUI.result.hidden = true; return; }
     if (res.error) {
       scaleUI.factorLabel.textContent = res.error;
       scaleUI.output.innerHTML = "";
-      scaleUI.writeBack.disabled = true;
       scaleUI.result.hidden = false;
-      lastScaled = null;
       return;
     }
     const scaled = window.ABV.scaleByFactor(recipe, res.factor);
     if (res.size) { scaled.batch_size = res.size; scaled.batch_unit = res.unit; }
-    lastScaled = scaled;
 
     const batchStr = scaled.batch_size
       ? `${fmtAmt(scaled.batch_size)}${scaled.batch_unit ? " " + scaled.batch_unit : ""}` : "—";
+    const equivalents = scaled.batch_size ? batchEquivalents(scaled.batch_size, scaled.batch_unit) : "";
     scaleUI.factorLabel.textContent =
-      `×${fmtAmt(res.factor)} — batch: ${batchStr}` + (res.note ? ` · ${res.note}` : "");
+      `×${fmtAmt(res.factor)} — batch: ${batchStr}` +
+      (equivalents ? ` (${equivalents})` : "") +
+      (res.note ? ` · ${res.note}` : "");
 
     scaleUI.output.innerHTML = "";
     scaled.ingredients.forEach(ing => {
@@ -420,7 +447,6 @@
       scaleUI.output.appendChild(row);
     });
     scaleUI.unitsHint.hidden = scaleUnitMode === "as-written";
-    scaleUI.writeBack.disabled = false;
     scaleUI.result.hidden = false;
   }
 
@@ -448,7 +474,6 @@
 
   function clearScaleCalc() {
     scaleMode = null;
-    lastScaled = null;
     scaleUI.size.value = "";
     scaleUI.unit.value = "";
     scaleUI.ingSel.value = "";
@@ -478,20 +503,6 @@
     renderScalePreview();
   });
   scaleUI.clear.addEventListener("click", clearScaleCalc);
-
-  // Explicit opt-in: copy the previewed amounts into the recipe (still needs Save).
-  scaleUI.writeBack.addEventListener("click", () => {
-    if (!lastScaled) return;
-    recipe.batch_size = lastScaled.batch_size;
-    recipe.batch_unit = lastScaled.batch_unit;
-    recipe.ingredients = lastScaled.ingredients;
-    document.getElementById("f-batch-size").value = recipe.batch_size;
-    document.getElementById("f-batch-unit").value = recipe.batch_unit;
-    clearScaleCalc();
-    renderIngredients();
-    updateABV();
-    showToast("Recipe overwritten with scaled amounts — press Save to keep it.");
-  });
 
   // ===== Target ABV: non-destructive solve preview =====
   // Two modes:
