@@ -22,16 +22,16 @@ Last updated: 2026-10-18 (America/Chicago)
 - The Brandy Sour Old Fashioned production formula calculates to **17.43% ABV**;
   its stored approved formula/label reference remains **12.5% ABV**.
 
-## Still local / not on GitHub or Netlify
+## Published source / Netlify status
 
-- GitHub `main` remains at `5d95343` (2026-08-23).
-- Local commits awaiting publication:
-  - `bad433f` — batch worksheet, ABV reliability, date handling, and backend
-    parity work.
-  - `1314ff7` — clearer “Production ABV” and “Approved ABV” labels.
-- Consequently, Netlify is still serving the older GitHub version. The live
-  Google Sheets data changes are already active because they use the separately
-  deployed Apps Script backend.
+- GitHub `main` was published on 2026-10-18 as commit `5250436` (“Release
+  production recipe updates”). It contains the batch worksheet, ABV reliability,
+  date-handling, status-document, and clearer ABV-label changes.
+- Netlify is **not connected to GitHub** for this project. Its production site
+  was deployed with Netlify Drop, so a GitHub push does not update the live web
+  app automatically.
+- The live Google Sheets data changes are already active because they use the
+  separately deployed Apps Script backend.
 
 ## Release rule
 
@@ -42,6 +42,6 @@ push and then a successful Netlify deploy.
 
 ## Next release
 
-Publish the front-end files to GitHub and confirm Netlify deploys successfully.
-Do not publish `apps-script/Code.gs` to the public repository unless the owner
-explicitly authorizes exposing that backend source there.
+Deploy the current front-end folder to Netlify Drop, or connect this Netlify
+project to the GitHub repository and deploy from `main`. Confirm the production
+site after deployment.
