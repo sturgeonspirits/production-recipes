@@ -1,0 +1,1904 @@
+{
+ "note": "Starter kitchen recipes transcribed from the printed PDFs, 2026-11-02. Imported once from kitchen.html.",
+ "recipes": [
+  {
+   "kitchen_id": "k_dough_friday",
+   "name": "Distiller's Dough",
+   "family": "",
+   "variant": "Pizza Friday (55%)",
+   "kind": "dough",
+   "status": "active",
+   "yield_qty": "20",
+   "yield_unit": "balls",
+   "ball_weight_g": 200,
+   "portion_9": "",
+   "portion_14": "",
+   "portion_unit": "",
+   "bake_temp": "750–760°F deck",
+   "bake_time": "120–150 sec",
+   "holding": "Cold bulk 18–20 hr at 38–40°F",
+   "method": "Bloom: Pour all of the warm water into the mixing tub. Add the salt, ADY and DADY directly to the water, stir gently and let sit 5–10 minutes until creamy and dissolved.\nMix and autolyse: Add the flour, holding back the reserve. Stir with a scraper or hand until no dry pockets remain (under 90 seconds). Cover and rest 20 minutes.\nFold set 1 (+10 min): Dust about half the reserve flour over the dough. Do a 4-corner stretch-and-fold, flip smooth side up and rest 10 minutes.\nFold set 2 (+20 min): Dust the rest of the reserve flour, repeat the 4 folds and rest 10 minutes.\nFold set 3 (+30 min): Final 4-corner fold, then tuck into a satiny, smooth boule.\nRoom-temp kickstart: Seal the tub and rest at room temperature (68–72°F) for 2 hours.\nCold bulk: Move the sealed tub to the walk-in or fridge (38–40°F) for 18–20 hours.\nPortion and proof: Pull the cold dough 3–4 hours before service. Scale into balls, roll tight on an unfloured bench and pinch the bottoms shut. Proof in trays until the dough reaches about 62–65°F and is relaxed and extensible.\nStretch and bake: Stretch on a 50/50 semolina/00 mix to 9 inches, keeping the rim. Launch onto the 750–760°F deck, rotate 180° around 60 seconds, and bake 120–150 seconds until leopard-spotted and crisp.",
+   "notes": "Pizza Friday dough. No sugar, oil, honey or malt: added fats and sugars scorch bitter-black on a 760°F deck before the crust bakes through.\nHold back 10% of the flour and work it in across the fold sets, so the initial dough is wetter.",
+   "source": "Amounts: distillers_dough_hand_mix_master.pdf (20-pizza column, 200 g balls). Method: 2026-10-01_Recipe_Distillers_Dough_55Pct_Hydration_Master.pdf.",
+   "ingredients": [
+    {
+     "section": "",
+     "name": "Tipo \"00\" flour",
+     "amount": "2530",
+     "unit": "g",
+     "reserve_pct": "10",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Water, warm (75–80°F)",
+     "amount": "1390",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Fine sea salt",
+     "amount": "71",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Active dry yeast (Costco ADY)",
+     "amount": "9.5",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Distiller's yeast (DADY)",
+     "amount": "1.2",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": "a small pinch, for ester and distillery aroma"
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_dough_packers_parbake",
+   "name": "Distiller's Dough",
+   "family": "",
+   "variant": "Packers par-bake (68%)",
+   "kind": "dough",
+   "status": "active",
+   "yield_qty": "10",
+   "yield_unit": "balls",
+   "ball_weight_g": 470,
+   "portion_9": "",
+   "portion_14": "",
+   "portion_unit": "",
+   "bake_temp": "",
+   "bake_time": "",
+   "holding": "Cold retard 20–24 hr at 38–40°F. Cool par-baked crusts completely before wrapping.",
+   "method": "Bloom: Bloom the ADY and DADY in about an eighth of the warm water for 5–10 minutes, until actively foaming.\nMix: Dissolve the salt in the rest of the water in the bulk tub. Add the bloomed yeast and the flour, holding back the reserve. Stir under 90 seconds until shaggy with no dry flour. Cover and rest 20 minutes.\nFold 1 (+0:20): Dust about a third of the reserve flour on top. With wet hands, stretch each side (north, east, south, west) up and into the center. Dust another third, flip smooth side up and tuck the edges under. Rest 30 minutes.\nFold 2 (+0:50): Dust the last of the reserve flour and do a second 4-point stretch-and-fold. Invert smooth side up and tuck tight to build surface tension. Rest 30 minutes.\nCoil lift (+1:20): Lift the whole mass from the center until the ends coil underneath; rotate 90° and repeat once. Seal the tub and rest 1 hour at about 70°F.\nCold retard: Walk-in or fridge (38–40°F) for 20–24 hours.\nBall: Pull the tub 2.5–3 hours before baking. Scale into balls, ball tightly, seal in proofing boxes and bench proof 1.5–2 hours until soft, puffy and extensible.\nPar-bake (Thursday): Stretch and bake the bare skin on the stone deck just until the crust sets without coloring the top. Cool completely on wire racks before wrapping.\nFinish (service): Top the par-baked crust with sauce and cheese and fire until the cheese melts and micro-blisters.",
+   "notes": "Packers-day dough, par-baked on Thursday. No sugar or oil.\nThe source sheet is written for 15 × 195 g (9-inch) balls; these amounts are rescaled to 10 × 470 g (14-inch) by the sheet's own baker's percentages (68% water, 2.8% salt, about 0.48% ADY, 10% of the flour held back).\nSTILL TO CONFIRM for 14-inch: the sheet's times are for 9-inch skins — par-bake 20–30 sec at 760–800°F, finish 90–120 sec at 650–700°F.",
+   "source": "2026-10-01_Recipe_Distillers_Dough_68Pct_Hydration_NoKnead.pdf",
+   "ingredients": [
+    {
+     "section": "",
+     "name": "Tipo \"00\" flour",
+     "amount": "2744",
+     "unit": "g",
+     "reserve_pct": "10",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Water, warm (90–95°F)",
+     "amount": "1866",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": "about 1/8 of it for the yeast bloom, the rest in the tub"
+    },
+    {
+     "section": "",
+     "name": "Fine sea salt",
+     "amount": "77",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Active dry yeast (Red Star ADY)",
+     "amount": "13.1",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Distiller's yeast (DADY)",
+     "amount": "0.8",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": "a generous pinch"
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_dough_neapolitan_760",
+   "name": "760°F Neapolitan Dough",
+   "family": "",
+   "variant": "",
+   "kind": "dough",
+   "status": "archived",
+   "yield_qty": "20",
+   "yield_unit": "balls",
+   "ball_weight_g": 200,
+   "portion_9": "",
+   "portion_14": "",
+   "portion_unit": "",
+   "bake_temp": "750–760°F deck",
+   "bake_time": "120–150 sec",
+   "holding": "Cold bulk 22 hr at 38–40°F",
+   "method": "Mix and knead: Dissolve the salt in the cool water. Whisk the yeast into the flour, add to the water, and mix on low 2–3 minutes, then medium 6–8 minutes until smooth (dough temp 70–72°F).\nRoom-temp kickstart: One master ball in a lightly oiled or floured tub, covered, 2 hours at 68–72°F.\nCold bulk: 22 hours at 38–40°F.\nPortion and ball: 3–4 hours before service, divide into balls, roll tight and seal the seams.\nFinal proof: 2–3 hours at room temperature, to 62–65°F and doubled.\nBake: Stretch on 50/50 00 and fine semolina. 750–760°F deck, rotate at 60 seconds, 120–150 seconds total.",
+   "notes": "The predecessor formula (58% hydration, instant yeast, no distiller's yeast). Replaced by Distiller's Dough; kept for the record.",
+   "source": "high_temp_pizza_recipe_760F.pdf",
+   "ingredients": [
+    {
+     "section": "",
+     "name": "Tipo \"00\" flour",
+     "amount": "2480",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Water, cool (55–60°F)",
+     "amount": "1438",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Fine sea salt",
+     "amount": "69",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Instant dry yeast (IDY)",
+     "amount": "7.4",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_sauce_smoky_bourbon_fresh",
+   "name": "Smoky Bourbon Tomato Reduction",
+   "family": "Smoky Bourbon Tomato",
+   "variant": "Fresh tomatoes",
+   "kind": "sauce",
+   "status": "active",
+   "yield_qty": "2",
+   "yield_unit": "cups",
+   "ball_weight_g": "",
+   "portion_9": "",
+   "portion_14": "",
+   "portion_unit": "",
+   "bake_temp": "Simmer, uncovered",
+   "bake_time": "25–35 min (40–45 for a double)",
+   "holding": "Refrigerate overnight before use; the smoke and bourbon deepen.",
+   "method": "Sauté aromatics: Heat the oil in a wide pot over medium. Cook the onion 6–7 minutes until soft and translucent, then the garlic for 1 minute.\nCollapse the tomatoes: Add the tomatoes and a pinch of salt. Raise to medium-high and cook, stirring often, 10–15 minutes until they break down and release their liquid.\nDeglaze: Add the bourbon and scrape up the browned bits. Boil hard 2–3 minutes to cook off the raw alcohol.\nReduce: Stir in the paprika, pepper flakes, salt and black pepper. Simmer uncovered on low, stirring now and then, until the tomato water is gone and the sauce is a thick, deep-red reduction (25–35 minutes for a single batch, 40–45 for a double).\nBlend: Pulse with an immersion blender to a spreadable texture, rustic or smooth.\nCool and rest: Cool completely, cover and refrigerate overnight before baking.",
+   "notes": "Made with whatever was on hand, so there are fresh and canned versions. The fresh-tomato sheets all use these ratios: 3 lb is a single batch (about 2 cups); 5–6 lb is the double (about 4 cups) — set Batches to 2.\nPairings from the sheets: smoked mozzarella, chorizo and caramelized onions; or brisket or wood-fired chicken with pickled red onion. No per-pie portion on the sheets.",
+   "source": "smoky_bourbon_sauce_3lbs.pdf; smoky_bourbon_sauce_fresh_tomatoes.pdf; smoky_bourbon_tomato_sauce.pdf; 2026-09-10_Recipe_Smoky_Bourbon_Tomato_Pizza_Sauce.pdf",
+   "ingredients": [
+    {
+     "section": "",
+     "name": "Fresh paste tomatoes (Roma or plum), cored & roughly chopped",
+     "amount": "3",
+     "unit": "lb",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Olive oil",
+     "amount": "2",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Yellow onion, finely diced",
+     "amount": "1",
+     "unit": "small",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Garlic, minced",
+     "amount": "3",
+     "unit": "clove",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Bourbon",
+     "amount": "1/4",
+     "unit": "cup",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Smoked paprika",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Crushed red pepper flakes",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Sea salt",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": "adjust to taste at the end"
+    },
+    {
+     "section": "",
+     "name": "Black pepper, freshly cracked",
+     "amount": "1/2",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_sauce_smoky_bourbon_canned",
+   "name": "Smoky Bourbon Tomato Reduction",
+   "family": "Smoky Bourbon Tomato",
+   "variant": "Canned San Marzano",
+   "kind": "sauce",
+   "status": "active",
+   "yield_qty": "1",
+   "yield_unit": "batch",
+   "ball_weight_g": "",
+   "portion_9": "",
+   "portion_14": "",
+   "portion_unit": "",
+   "bake_temp": "Gentle simmer",
+   "bake_time": "25 min",
+   "holding": "",
+   "method": "Sauté: Heat the oil over medium and cook the onion about 5 minutes, until translucent.\nGarlic and bourbon: Add the garlic for 1 minute, then the bourbon; simmer 2 minutes to burn off the alcohol.\nSimmer: Add the tomatoes, paprika, pepper flakes, salt and pepper. Simmer gently about 25 minutes until thickened.",
+   "notes": "From a dishgen.com printout written for a home oven; the sauce carries over as is. The sheet gives no yield or per-pie portion.",
+   "source": "bourbon-pizza-sauce.pdf",
+   "ingredients": [
+    {
+     "section": "",
+     "name": "Olive oil",
+     "amount": "2",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Yellow onion, finely diced",
+     "amount": "1",
+     "unit": "small",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Garlic, minced",
+     "amount": "3",
+     "unit": "clove",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "San Marzano tomatoes",
+     "amount": "1",
+     "unit": "can (28 oz)",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Bourbon",
+     "amount": "1/4",
+     "unit": "cup",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Smoked paprika",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Crushed red pepper flakes",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Sea salt",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Black pepper",
+     "amount": "1/2",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_sauce_garlic_vodka_red",
+   "name": "Garlic Vodka Red Sauce",
+   "family": "",
+   "variant": "",
+   "kind": "sauce",
+   "status": "active",
+   "yield_qty": "64-68",
+   "yield_unit": "oz",
+   "ball_weight_g": "",
+   "portion_9": "2",
+   "portion_14": "",
+   "portion_unit": "oz",
+   "bake_temp": "Gentle simmer, uncovered",
+   "bake_time": "20–30 min",
+   "holding": "Cool completely and refrigerate. Best made one day ahead. Portion cold or cool.",
+   "method": "Sweat the shallots: Heat the butter and oil over medium. Add the shallots and pepper flakes and cook 4–5 minutes, stirring often, until soft and translucent. Do not brown.\nCaramelize the paste: Add the tomato paste and cook 4–5 minutes, stirring and pressing it into the fat, until it turns from bright red to deep brick red. Do not burn.\nAdd the vodka: Turn off the burner and move the pot away from any open flame. Add the vodka, return to medium heat, scrape the bottom and simmer 3–4 minutes until the alcohol smell is gone and the mixture is thick and glossy.\nAdd and blend the tomatoes: Add the tomatoes, salt and pepper and blend smooth with an immersion blender, keeping the head submerged.\nReduce: Bring to a gentle boil, then simmer uncovered on low 20–30 minutes, stirring occasionally, until thick and spreadable — it should sit on a spoon rather than run off.\nFinish: Lowest heat. Slowly stir in the cream and cook gently 2–3 minutes without a hard boil. Off heat, stir in the Parmesan until smooth. Taste and adjust.\nCool, weigh, store: Cool completely, weigh (expect 64–68 oz; don't reduce below 60), cover and refrigerate.",
+   "notes": "2 oz per 9-inch pie (confirmed November 2026; an older sheet said 3 oz). Stir well before portioning.",
+   "source": "Sturgeon_Spirits_One_Pot_Garlic_Vodka_Pizza_Sauce.pdf; Sturgeon_Spirits_Garlic_Vodka_Pizza_Sauce.pdf",
+   "ingredients": [
+    {
+     "section": "",
+     "name": "Unsalted butter",
+     "amount": "4",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Extra virgin olive oil",
+     "amount": "4",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Shallots, finely minced",
+     "amount": "2",
+     "unit": "medium",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Crushed red pepper flakes",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Tomato paste",
+     "amount": "6",
+     "unit": "oz",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Sturgeon Spirits house garlic vodka",
+     "amount": "1",
+     "unit": "cup",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Whole peeled San Marzano tomatoes",
+     "amount": "2",
+     "unit": "can (28 oz)",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Heavy cream",
+     "amount": "3/4",
+     "unit": "cup",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Parmigiano-Reggiano, finely grated",
+     "amount": "1",
+     "unit": "cup",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Kosher salt",
+     "amount": "1 1/2",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": "then adjust to taste"
+    },
+    {
+     "section": "",
+     "name": "Black pepper, coarse ground",
+     "amount": "1/2",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_sauce_fresh_roma_garlic_vodka",
+   "name": "Fresh Roma Two-Stage Garlic Vodka Sauce",
+   "family": "",
+   "variant": "",
+   "kind": "sauce",
+   "status": "active",
+   "yield_qty": "2",
+   "yield_unit": "cups",
+   "ball_weight_g": "",
+   "portion_9": "1.5-1.75",
+   "portion_14": "",
+   "portion_unit": "oz",
+   "bake_temp": "Simmer, uncovered",
+   "bake_time": "15–18 min",
+   "holding": "Cool completely to room temperature before saucing.",
+   "method": "Prep the Romas: Halve lengthwise, V-cut out the stem core and scoop out the watery seed cavities. Pulse coarsely in a food processor or crush by hand.\nSweat and caramelize: Heat the oil in a wide pan over medium-low. Sweat the shallot and pepper flakes 3 minutes until soft. Stir in the tomato paste and cook 2 minutes until deep brick red.\nDeglaze (stage 1): Add the deglazing garlic vodka and scrape up the fond. Simmer 2–3 minutes until reduced by half and the alcohol vapor is gone.\nSimmer and reduce: Add the tomatoes, salt, basil stems and most of the oregano. Simmer uncovered on medium-low 15–18 minutes, until a spoon leaves a clear trail across the pan.\nFinish off heat (stage 2): Pull the pan off the heat and discard the basil stems. Whisk in the finishing vodka, cream, Parmesan, the rest of the oregano and the basil chiffonade until silky.\nCool and portion: Cool completely. Spread thin for a crisp underside.",
+   "notes": "The sheet says this batch covers 7–8 nine-inch pies, but 2 cups at 1.5–1.75 oz per pie works out to 9–10. Worth checking which is right (the yield may be smaller than 2 cups once reduced).",
+   "source": "fresh garlic red sauce.pdf",
+   "ingredients": [
+    {
+     "section": "Fresh produce & spirit",
+     "name": "Fresh Roma tomatoes, cored, seeded & coarsely crushed",
+     "amount": "2",
+     "unit": "lb",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Fresh produce & spirit",
+     "name": "Garlic vodka — hot deglaze",
+     "amount": "1/4",
+     "unit": "cup",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Fresh produce & spirit",
+     "name": "Garlic vodka — off-heat finish",
+     "amount": "2",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Fresh produce & spirit",
+     "name": "Shallot, finely minced",
+     "amount": "1",
+     "unit": "small",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aromatics & reduction base",
+     "name": "Extra virgin olive oil",
+     "amount": "2",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aromatics & reduction base",
+     "name": "Double-concentrated tomato paste",
+     "amount": "2",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aromatics & reduction base",
+     "name": "Fresh Italian oregano, chopped",
+     "amount": "1",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": "divided: about ¾ in the simmer, the rest at the finish"
+    },
+    {
+     "section": "Aromatics & reduction base",
+     "name": "Fresh basil leaves",
+     "amount": "6-8",
+     "unit": "",
+     "reserve_pct": "",
+     "notes": "bruise the stems for the simmer; chiffonade the leaves for the finish"
+    },
+    {
+     "section": "Aromatics & reduction base",
+     "name": "Fine sea salt",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": "or to taste"
+    },
+    {
+     "section": "Aromatics & reduction base",
+     "name": "Crushed red pepper flakes",
+     "amount": "1/4",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Off-heat emulsion",
+     "name": "Heavy cream",
+     "amount": "2",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Off-heat emulsion",
+     "name": "Parmigiano-Reggiano, microplaned",
+     "amount": "3",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_sauce_peach_vodka",
+   "name": "Peach Vodka Pizza Sauce",
+   "family": "",
+   "variant": "",
+   "kind": "sauce",
+   "status": "active",
+   "yield_qty": "22-24",
+   "yield_unit": "oz",
+   "ball_weight_g": "",
+   "portion_9": "55-60",
+   "portion_14": "",
+   "portion_unit": "g",
+   "bake_temp": "Simmer, uncovered",
+   "bake_time": "10–12 min, then 2 min with the cream",
+   "holding": "Cool to room temperature before saucing.",
+   "method": "Drain and crush: Colander-strain the tomatoes 2 minutes and discard the thin juice. Hand-crush into small, pulpy chunks. Do not blend.\nBloom and sweat: Melt the butter with the oil over medium-low. Add the pepper flakes for 30 seconds, then the shallots, lemon peel and a pinch of salt; sweat 3–4 minutes without browning. Stir in the garlic for 45 seconds.\nFry the paste: Work the tomato paste across the pan 2–3 minutes over medium until rich rust-red.\nStage 1 deglaze: Add the stage 1 peach vodka, scrape the bottom and simmer hard 60–90 seconds until the ethanol steam clears.\nSimmer and cream: Add the tomatoes, salt and pepper. Simmer gently uncovered 10–12 minutes. Remove the lemon peel. On low, whisk in the cream slowly and simmer 2 minutes.\nStage 2 finish: Off the heat, rest 60 seconds (below 175°F), then whisk in the stage 2 vodka and the Parmesan until glossy. Cool to room temperature.",
+   "notes": "Two-stage spirit: stage 1 cooks into the base; stage 2 goes in off the heat to keep the peach aroma.\nPairs with well-drained fior di latte or low-moisture mozzarella, torn speck or prosciutto cotto, and post-bake hot honey or rosemary. Deck 750–800°F, 60–90 seconds.",
+   "source": "2026-10-02_Recipe_Peach_Vodka_Pizza_Sauce.pdf",
+   "ingredients": [
+    {
+     "section": "Tomato foundation",
+     "name": "San Marzano tomatoes, drained thoroughly",
+     "amount": "1",
+     "unit": "can (28 oz)",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Tomato foundation",
+     "name": "Double-concentrated tomato paste",
+     "amount": "45",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aromatics & bloom",
+     "name": "Unsalted butter",
+     "amount": "20",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aromatics & bloom",
+     "name": "Extra virgin olive oil",
+     "amount": "15",
+     "unit": "mL",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aromatics & bloom",
+     "name": "Crushed red pepper flakes",
+     "amount": "1/2",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": "bloomed in the fat"
+    },
+    {
+     "section": "Aromatics & bloom",
+     "name": "Shallots, minced fine",
+     "amount": "45",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aromatics & bloom",
+     "name": "Garlic, microplaned",
+     "amount": "2",
+     "unit": "clove",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aromatics & bloom",
+     "name": "Lemon peel, yellow zest only (2–3 inch)",
+     "amount": "1",
+     "unit": "strip",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Alcohol & emulsion",
+     "name": "Peach vodka — stage 1 (deglaze)",
+     "amount": "60",
+     "unit": "mL",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Alcohol & emulsion",
+     "name": "Heavy cream (36–40% fat)",
+     "amount": "60",
+     "unit": "mL",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Alcohol & emulsion",
+     "name": "Peach vodka — stage 2 (off heat)",
+     "amount": "30",
+     "unit": "mL",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Alcohol & emulsion",
+     "name": "Parmigiano-Reggiano, microplaned",
+     "amount": "25",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Seasoning",
+     "name": "Fine sea salt",
+     "amount": "5",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": "to taste"
+    },
+    {
+     "section": "Seasoning",
+     "name": "Black pepper, fresh cracked",
+     "amount": "4-5",
+     "unit": "turns",
+     "reserve_pct": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_sauce_basil_vodka",
+   "name": "Basil Vodka Pizza Sauce",
+   "family": "",
+   "variant": "Cold-butter emulsion",
+   "kind": "sauce",
+   "status": "active",
+   "yield_qty": "720",
+   "yield_unit": "g",
+   "ball_weight_g": "",
+   "portion_9": "45-50",
+   "portion_14": "",
+   "portion_unit": "g",
+   "bake_temp": "Medium-low simmer",
+   "bake_time": "25–30 min",
+   "holding": "Chill completely before saucing; never sauce with warm sauce.",
+   "method": "Mill and brown: Pass the tomatoes through a food mill or puree lightly. In a wide saucepan over medium, melt the starting butter until the foam subsides and the solids turn golden and nutty (about 2 minutes).\nConcentrate: Add the tomatoes, salt, chili and lemon peel; set the onion halves cut-side down in the center. Simmer on medium-low 25–30 minutes, stirring occasionally, until jammy and a spoon leaves a clean trail. Discard the onion and lemon peel.\nFlash-deglaze: Lower the heat and pour in the basil vodka all at once. Stir at a bare simmer 2–3 minutes at most. Do not boil hard.\nMount the butter: Off the heat, stand 2 minutes (below 185°F), then whisk in the cold butter a piece at a time until glossy and fully emulsified.\nChill: Transfer to a shallow container and chill completely before ladling.",
+   "notes": "Cold butter instead of cream: cream sauces weep and separate above 700°F; the mounted butter clings without pooling. One 2-oz ladle per pie, leaving a ½-inch rim.",
+   "source": "Basil_Vodka_Pizza_Sauce_28oz_White.pdf",
+   "ingredients": [
+    {
+     "section": "",
+     "name": "San Marzano plum tomatoes",
+     "amount": "1",
+     "unit": "can (28 oz)",
+     "reserve_pct": "",
+     "notes": "milled or lightly pureed"
+    },
+    {
+     "section": "",
+     "name": "Basil-infused vodka",
+     "amount": "90",
+     "unit": "mL",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Unsalted butter — start (to brown)",
+     "amount": "20",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Unsalted butter — finish (cold, cubed)",
+     "amount": "35",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Yellow onion, peeled & halved (left whole)",
+     "amount": "70",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": "about ½ medium; discarded"
+    },
+    {
+     "section": "",
+     "name": "Fine sea salt",
+     "amount": "7.5",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Calabrian chili paste or flakes",
+     "amount": "2",
+     "unit": "g",
+     "reserve_pct": "",
+     "notes": "a pinch"
+    },
+    {
+     "section": "",
+     "name": "Lemon peel, wide strip, no pith",
+     "amount": "1",
+     "unit": "strip",
+     "reserve_pct": "",
+     "notes": "discarded"
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_sauce_cherry_bourbon",
+   "name": "Door County Cherry & Bourbon Red Sauce",
+   "family": "",
+   "variant": "",
+   "kind": "sauce",
+   "status": "active",
+   "yield_qty": "24",
+   "yield_unit": "oz",
+   "ball_weight_g": "",
+   "portion_9": "2",
+   "portion_14": "",
+   "portion_unit": "oz",
+   "bake_temp": "Gentle simmer",
+   "bake_time": "12–15 min",
+   "holding": "Below 40°F — rapid chill in an ice bath or blast chiller.",
+   "method": "Aromatic bloom: Melt the butter in a heavy saucepan over medium-low. Sweat the shallot and garlic 2–3 minutes until glassy. Add the tomato paste and chili and cook 60 seconds until brick red.\nBourbon reduction: Pull the pan off the burner, add the bourbon, then return to medium-high. Flame off or boil hard 90 seconds until the vapor bite is gone and it's reduced by half.\nConcentrate and tomatoes: Stir in the cherry concentrate, honey and tomatoes. Add the smoked salt, pepper and rosemary, scraping up all the fond.\nSimmer to coat: Simmer gently 12–15 minutes, stirring often, until it tightens into a clinging glaze that won't pool.\nRapid chill: Remove the rosemary. Spread in a shallow hotel pan over an ice bath or into the blast chiller; cool below 40°F before service.",
+   "notes": "Pizza Friday special. Single batch covers about 12 pies; the double (set Batches to 2) about 24. Flavor: oak char, malic tart and smoke.",
+   "source": "2026-10-16_Recipe_Bourbon_Cherry_Pizza_Sauce_Prep.pdf",
+   "ingredients": [
+    {
+     "section": "",
+     "name": "San Marzano tomatoes",
+     "amount": "1",
+     "unit": "can (28 oz)",
+     "reserve_pct": "",
+     "notes": "hand-crushed; pour off 3–4 tbsp of thin liquid"
+    },
+    {
+     "section": "",
+     "name": "Door County tart cherry concentrate",
+     "amount": "2",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": "100% unsweetened Montmorency"
+    },
+    {
+     "section": "",
+     "name": "Sturgeon Spirits bourbon",
+     "amount": "2",
+     "unit": "fl oz",
+     "reserve_pct": "",
+     "notes": "deglaze and reduce by half"
+    },
+    {
+     "section": "",
+     "name": "Honey or brown sugar",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Unsalted butter",
+     "amount": "2",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Shallot, fine brunoise",
+     "amount": "1",
+     "unit": "large",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Garlic, microplaned",
+     "amount": "2",
+     "unit": "clove",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Double tomato paste",
+     "amount": "1",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Calabrian chili paste",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": "or chili flakes"
+    },
+    {
+     "section": "",
+     "name": "Smoked sea salt",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": "adjust at the final taste"
+    },
+    {
+     "section": "",
+     "name": "Black pepper",
+     "amount": "1/2",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Fresh rosemary, bruised",
+     "amount": "1",
+     "unit": "sprig",
+     "reserve_pct": "",
+     "notes": "simmer whole; discard before chilling"
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_sauce_aperol_spritz",
+   "name": "Aperol & Fresh Tomato Spritz Sauce",
+   "family": "",
+   "variant": "No-cook",
+   "kind": "sauce",
+   "status": "active",
+   "yield_qty": "3.5",
+   "yield_unit": "cups",
+   "ball_weight_g": "",
+   "portion_9": "",
+   "portion_14": "",
+   "portion_unit": "",
+   "bake_temp": "",
+   "bake_time": "About 12 min prep",
+   "holding": "Keep chilled until service.",
+   "method": "Pulse and drain: Pulse the tomatoes 4–6 times only, until coarsely chopped (running it foams the sauce pink). Pour into a colander or sieve over a bowl and let drain untouched 6–8 minutes.\nAperol glaze: Warm the oil in a small saucepan over medium and sweat the shallot 60 seconds. Add the Aperol, vinegar and orange peel; boil and reduce by half (3–4 minutes) until glossy. Remove the peel.\nCombine: Scrape the warm syrup into the drained pulp and whisk in the salt and pepper until the oil emulsifies into the tomato.",
+   "notes": "The sheet portions about ⅓ cup per 12-inch pie and says 6–8 pies per batch; it gives no 9-inch portion yet.",
+   "source": "Aperol Fresh Tomato Pizza Sauce.pdf",
+   "ingredients": [
+    {
+     "section": "Fresh tomato base",
+     "name": "Fresh ripe tomatoes (plum, Roma or vine), cored & quartered",
+     "amount": "3",
+     "unit": "lb",
+     "reserve_pct": "",
+     "notes": "skins and seeds stay in"
+    },
+    {
+     "section": "Fresh tomato base",
+     "name": "Fine sea salt",
+     "amount": "1.5",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Fresh tomato base",
+     "name": "Ground black or white pepper",
+     "amount": "1/4",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aperol spritz reduction",
+     "name": "Aperol",
+     "amount": "4",
+     "unit": "fl oz",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aperol spritz reduction",
+     "name": "White wine vinegar (or white balsamic)",
+     "amount": "1.5",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aperol spritz reduction",
+     "name": "Extra virgin olive oil",
+     "amount": "1.5",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aperol spritz reduction",
+     "name": "Shallot, roughly minced",
+     "amount": "1",
+     "unit": "small",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "Aperol spritz reduction",
+     "name": "Orange peel, wide strips, pith removed",
+     "amount": "2",
+     "unit": "strip",
+     "reserve_pct": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_base_garlic_butter",
+   "name": "Garlic Butter Pizza Base",
+   "family": "",
+   "variant": "",
+   "kind": "base",
+   "status": "active",
+   "yield_qty": "1.5",
+   "yield_unit": "cups",
+   "ball_weight_g": "",
+   "portion_9": "24",
+   "portion_14": "",
+   "portion_unit": "g",
+   "bake_temp": "Very low heat",
+   "bake_time": "About 2 min (the garlic must not color)",
+   "holding": "Stir before every use. Keep a small working amount at the station; hold hot or refrigerated per food-safety procedure.",
+   "method": "Prepare: Mince the garlic; chop the oregano and parsley and keep them separate.\nMelt: Melt the butter with the oil over low heat. Do not brown.\nCook the garlic: Add the garlic and cook over very low heat about 2 minutes, stirring, until fragrant and soft. Pull it before it turns golden.\nSeason: Off heat, stir in the oregano, parsley, salt and pepper flakes. Rest 5 minutes to infuse.\nPortion: Stir well and spread about 24 g (1.4 tbsp) on each 9-inch skin, keeping the garlic and herbs under the cheese and toppings.",
+   "notes": "15 pies × 24 g ≈ 360 g used, with allowance for the container and service loss.\nAt 800°F, don't brush the bare rim with the garlic-herb mix before baking — it scorches. Brush the rim with plain olive oil before, or with garlic butter right after the bake.",
+   "source": "Sturgeon_Spirits_Garlic_Butter_Pizza_Base.pdf",
+   "ingredients": [
+    {
+     "section": "",
+     "name": "Unsalted butter",
+     "amount": "1 3/4",
+     "unit": "sticks",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Extra virgin olive oil",
+     "amount": "7",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Garlic, finely minced",
+     "amount": "12-14",
+     "unit": "clove",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Fresh oregano leaves, finely chopped",
+     "amount": "2",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Fresh parsley, finely chopped",
+     "amount": "1/4",
+     "unit": "cup",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Fine sea salt",
+     "amount": "3/4",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Crushed red pepper flakes",
+     "amount": "3/4",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": "optional"
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_base_bourbon_sage",
+   "name": "Bourbon-Sage Brown Butter Base",
+   "family": "",
+   "variant": "",
+   "kind": "base",
+   "status": "active",
+   "yield_qty": "5-6",
+   "yield_unit": "pies",
+   "ball_weight_g": "",
+   "portion_9": "2-2.5",
+   "portion_14": "",
+   "portion_unit": "tbsp",
+   "bake_temp": "Medium, then medium-low",
+   "bake_time": "About 2 min simmer at the end",
+   "holding": "Cool; spread at room temperature.",
+   "method": "Brown butter and sage: Melt the butter over medium. When the foam subsides and the solids turn golden-brown, add the shallots and sage; swirl 60–90 seconds until nutty.\nRoux: Whisk in the garlic and flour and cook 60 seconds, whisking, so the flour absorbs the fat (this keeps the oil from separating in the 800°F oven).\nDeglaze: Pull the pan off the heat, add the bourbon and garlic vodka, return to medium-low and whisk 30–45 seconds into a thick paste as the alcohol cooks off.\nEmulsify: Drizzle in the warm stock, whisking, until smooth and glossy. Simmer 2 minutes to a light gravy. Off heat, whisk in the cheese, pepper and salt. Cool.",
+   "notes": "Base for the Bourbon-Sage Chicken & Jalapeño pizza.",
+   "source": "bourbon_sage_chicken_pizza_prep_sheet.pdf",
+   "ingredients": [
+    {
+     "section": "",
+     "name": "Unsalted butter",
+     "amount": "2",
+     "unit": "sticks",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Fresh sage, chiffonade",
+     "amount": "1/4",
+     "unit": "cup",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Shallots, minced fine",
+     "amount": "2",
+     "unit": "medium",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Garlic, grated",
+     "amount": "3",
+     "unit": "clove",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "00 or AP flour",
+     "amount": "2",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Bourbon",
+     "amount": "2",
+     "unit": "fl oz",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Garlic vodka",
+     "amount": "0.5",
+     "unit": "fl oz",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Chicken stock, warm",
+     "amount": "3/4",
+     "unit": "cup",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Pecorino or Parmesan, grated",
+     "amount": "1/3",
+     "unit": "cup",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Black pepper",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Salt",
+     "amount": "1/2",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_topping_chicken_thighs",
+   "name": "Smoky Garlic-Pepper Chicken Thighs",
+   "family": "",
+   "variant": "",
+   "kind": "topping",
+   "status": "active",
+   "yield_qty": "5-6",
+   "yield_unit": "pies",
+   "ball_weight_g": "",
+   "portion_9": "",
+   "portion_14": "",
+   "portion_unit": "",
+   "bake_temp": "Smoking-hot cast iron",
+   "bake_time": "4–5 min + 3 min, to 170°F internal",
+   "holding": "",
+   "method": "Trim and rub: Snip the heavy fat caps off the thigh edges. Toss with the oil and the spice blend for an even coat.\nHard sear: Heat a cast-iron skillet until smoking. Sear smooth-side down 4–5 minutes until deeply browned, then flip for 3 minutes to 170°F internal.\nDeglaze and slice: Rest the thighs 5 minutes. Add the bourbon and lemon juice to the hot pan to lift the fond. Slice the thighs ½ inch and toss in the reduced pan juices.",
+   "notes": "",
+   "source": "bourbon_sage_chicken_pizza_prep_sheet.pdf",
+   "ingredients": [
+    {
+     "section": "",
+     "name": "Boneless chicken thighs",
+     "amount": "1.5",
+     "unit": "lb",
+     "reserve_pct": "",
+     "notes": "trim the heavy fat caps"
+    },
+    {
+     "section": "",
+     "name": "Olive oil",
+     "amount": "1",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Kosher salt",
+     "amount": "1.5",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Coarse black pepper",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Smoked paprika",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Garlic powder",
+     "amount": "1",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Onion powder",
+     "amount": "1/2",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Dried thyme",
+     "amount": "1/2",
+     "unit": "tsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Bourbon (deglaze)",
+     "amount": "1",
+     "unit": "fl oz",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Lemon (juice)",
+     "amount": "1/2",
+     "unit": "lemon",
+     "reserve_pct": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "kitchen_id": "k_finish_hot_honey",
+   "name": "Hot Honey",
+   "family": "",
+   "variant": "",
+   "kind": "finish",
+   "status": "active",
+   "yield_qty": "1",
+   "yield_unit": "cup",
+   "ball_weight_g": "",
+   "portion_9": "",
+   "portion_14": "",
+   "portion_unit": "",
+   "bake_temp": "Bare simmer (150–160°F)",
+   "bake_time": "Steep 5–10 min",
+   "holding": "Strained (dried flakes only): sealed jar at room temperature, up to 3 months. With fresh chili left in: refrigerate, up to 1 month.",
+   "method": "Combine and heat: Honey, pepper flakes and fresh chili (if using) in a small heavy saucepan over medium-low.\nGently simmer: Bring to a bare simmer (150–160°F), just tiny bubbles at the edge. Don't boil — it scorches the honey.\nInfuse: Lower the heat and steep 5–10 minutes. Taste at 5 minutes.\nBrighten: Off heat, stir in the vinegar and salt.\nStrain or jar: Strain through a fine sieve for a clear finish, or leave the flakes in for more heat over time.\nCool and seal: Cool to room temperature before lidding.",
+   "notes": "Bourbon cask finish: stir in 1 tsp high-proof bourbon right off the heat.\nSmoky chipotle: swap half the flakes for crushed chipotle, or add ¼ tsp smoked paprika.\nCocktail syrup: equal parts hot honey and warm water.",
+   "source": "hot honey recipe.pdf",
+   "ingredients": [
+    {
+     "section": "",
+     "name": "Pure honey (clover, wildflower or orange blossom)",
+     "amount": "1",
+     "unit": "cup",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Crushed red pepper flakes",
+     "amount": "1",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": "adjust to taste"
+    },
+    {
+     "section": "",
+     "name": "Fresh red chili (Fresno or jalapeño), thinly sliced",
+     "amount": "1",
+     "unit": "each",
+     "reserve_pct": "",
+     "notes": "optional"
+    },
+    {
+     "section": "",
+     "name": "Apple cider vinegar",
+     "amount": "1",
+     "unit": "tbsp",
+     "reserve_pct": "",
+     "notes": ""
+    },
+    {
+     "section": "",
+     "name": "Fine sea salt",
+     "amount": "pinch",
+     "unit": "",
+     "reserve_pct": "",
+     "notes": ""
+    }
+   ]
+  }
+ ],
+ "builds": [
+  {
+   "build_id": "p_peninsula_pine",
+   "name": "The Peninsula & Pine",
+   "status": "idea",
+   "sizes": "9,14",
+   "dough_9": "k_dough_friday",
+   "dough_14": "k_dough_packers_parbake",
+   "description": "Door County cherry & bourbon sauce, smoked provolone, pancetta, pickled red onion and rosemary, finished with hot honey.",
+   "bake_notes": "Hot deck, 700–800°F.",
+   "notes": "From the Door County Cherry & Bourbon station sheet (Chef Gus station spec).",
+   "layers": [
+    {
+     "layer": "base",
+     "component_id": "k_sauce_cherry_bourbon",
+     "item": "",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "chilled"
+    },
+    {
+     "layer": "cheese",
+     "component_id": "",
+     "item": "Low-moisture mozzarella",
+     "amount_9": "1.75",
+     "amount_14": "",
+     "unit": "oz",
+     "notes": ""
+    },
+    {
+     "layer": "cheese",
+     "component_id": "",
+     "item": "Smoked provolone or fontina",
+     "amount_9": "1",
+     "amount_14": "",
+     "unit": "oz",
+     "notes": ""
+    },
+    {
+     "layer": "topping",
+     "component_id": "",
+     "item": "Pancetta, par-rendered 50%",
+     "amount_9": "1.25",
+     "amount_14": "",
+     "unit": "oz",
+     "notes": ""
+    },
+    {
+     "layer": "topping",
+     "component_id": "",
+     "item": "Pickled red onions",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    },
+    {
+     "layer": "topping",
+     "component_id": "",
+     "item": "Fresh rosemary needles",
+     "amount_9": "10-12",
+     "amount_14": "",
+     "unit": "needles",
+     "notes": ""
+    },
+    {
+     "layer": "finish",
+     "component_id": "k_finish_hot_honey",
+     "item": "",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "drizzle"
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Aged Wisconsin cheese, microplaned",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "the sheet's text is cut off here — confirm which cheese"
+    }
+   ]
+  },
+  {
+   "build_id": "p_bourbon_sage_chicken",
+   "name": "Bourbon-Sage Chicken & Jalapeño",
+   "status": "idea",
+   "sizes": "9,14",
+   "dough_9": "k_dough_friday",
+   "dough_14": "k_dough_packers_parbake",
+   "description": "Bourbon-sage brown butter base, mozzarella, pan-glazed chicken thigh and jalapeño, arugula and hot honey.",
+   "bake_notes": "800°F deck until the crust blisters, the cheese bubbles golden and the jalapeño edges char.",
+   "notes": "",
+   "layers": [
+    {
+     "layer": "base",
+     "component_id": "k_base_bourbon_sage",
+     "item": "",
+     "amount_9": "2-2.5",
+     "amount_14": "",
+     "unit": "tbsp",
+     "notes": "room temperature; leave a clean rim"
+    },
+    {
+     "layer": "cheese",
+     "component_id": "",
+     "item": "Low-moisture mozzarella, shredded",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "optional: aged provolone or white cheddar"
+    },
+    {
+     "layer": "topping",
+     "component_id": "k_topping_chicken_thighs",
+     "item": "",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "on top of the cheese so the edges caramelize"
+    },
+    {
+     "layer": "topping",
+     "component_id": "",
+     "item": "Fresh jalapeño, thin rounds",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Baby arugula",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "tossed in lemon juice, olive oil and flaky salt"
+    },
+    {
+     "layer": "finish",
+     "component_id": "k_finish_hot_honey",
+     "item": "",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "zigzag over the greens and rim"
+    }
+   ]
+  },
+  {
+   "build_id": "p_distillers_margherita",
+   "name": "Distiller's Margherita",
+   "status": "idea",
+   "sizes": "9,14",
+   "dough_9": "k_dough_friday",
+   "dough_14": "k_dough_packers_parbake",
+   "description": "Basil vodka sauce, fior di latte, cherry tomatoes, torn basil and Pecorino.",
+   "bake_notes": "",
+   "notes": "Suggested on the Basil Vodka sauce sheet.",
+   "layers": [
+    {
+     "layer": "base",
+     "component_id": "k_sauce_basil_vodka",
+     "item": "",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    },
+    {
+     "layer": "cheese",
+     "component_id": "",
+     "item": "Fior di latte, pressed dry",
+     "amount_9": "50",
+     "amount_14": "",
+     "unit": "g",
+     "notes": ""
+    },
+    {
+     "layer": "topping",
+     "component_id": "",
+     "item": "Cherry tomatoes, halved",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "skin-side down"
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Torn basil leaves",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Pecorino Romano",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "a heavy snow"
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Extra virgin olive oil",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "build_id": "p_pancetta_hot_honey",
+   "name": "Pancetta & Hot Honey",
+   "status": "idea",
+   "sizes": "9,14",
+   "dough_9": "k_dough_friday",
+   "dough_14": "k_dough_packers_parbake",
+   "description": "Basil vodka sauce, mozzarella, shaved pancetta and shallots, Calabrian hot honey.",
+   "bake_notes": "",
+   "notes": "Suggested on the Basil Vodka sauce sheet.",
+   "layers": [
+    {
+     "layer": "base",
+     "component_id": "k_sauce_basil_vodka",
+     "item": "",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    },
+    {
+     "layer": "cheese",
+     "component_id": "",
+     "item": "Low-moisture mozzarella",
+     "amount_9": "55",
+     "amount_14": "",
+     "unit": "g",
+     "notes": ""
+    },
+    {
+     "layer": "topping",
+     "component_id": "",
+     "item": "Pancetta, shaved",
+     "amount_9": "35",
+     "amount_14": "",
+     "unit": "g",
+     "notes": ""
+    },
+    {
+     "layer": "topping",
+     "component_id": "",
+     "item": "Shallots, shaved",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Calabrian hot honey",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Parmigiano-Reggiano, shaved",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "build_id": "p_fennel_castelvetrano",
+   "name": "Fennel Sausage & Castelvetrano",
+   "status": "idea",
+   "sizes": "9,14",
+   "dough_9": "k_dough_friday",
+   "dough_14": "k_dough_packers_parbake",
+   "description": "Basil vodka sauce, mozzarella and provolone, fennel sausage, Castelvetrano olives, fennel fronds.",
+   "bake_notes": "",
+   "notes": "Suggested on the Basil Vodka sauce sheet.",
+   "layers": [
+    {
+     "layer": "base",
+     "component_id": "k_sauce_basil_vodka",
+     "item": "",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    },
+    {
+     "layer": "cheese",
+     "component_id": "",
+     "item": "Mozzarella",
+     "amount_9": "50",
+     "amount_14": "",
+     "unit": "g",
+     "notes": ""
+    },
+    {
+     "layer": "cheese",
+     "component_id": "",
+     "item": "Mild provolone",
+     "amount_9": "15",
+     "amount_14": "",
+     "unit": "g",
+     "notes": ""
+    },
+    {
+     "layer": "topping",
+     "component_id": "",
+     "item": "Raw fennel sausage",
+     "amount_9": "40",
+     "amount_14": "",
+     "unit": "g",
+     "notes": "dime-sized pinches"
+    },
+    {
+     "layer": "topping",
+     "component_id": "",
+     "item": "Castelvetrano olives, torn",
+     "amount_9": "20",
+     "amount_14": "",
+     "unit": "g",
+     "notes": ""
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Fennel fronds",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "build_id": "p_cup_char_stracciatella",
+   "name": "Cup & Char Pepperoni + Stracciatella",
+   "status": "idea",
+   "sizes": "9,14",
+   "dough_9": "k_dough_friday",
+   "dough_14": "k_dough_packers_parbake",
+   "description": "Basil vodka sauce, mozzarella, cupping pepperoni, cold stracciatella.",
+   "bake_notes": "",
+   "notes": "Suggested on the Basil Vodka sauce sheet.",
+   "layers": [
+    {
+     "layer": "base",
+     "component_id": "k_sauce_basil_vodka",
+     "item": "",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    },
+    {
+     "layer": "cheese",
+     "component_id": "",
+     "item": "Mozzarella",
+     "amount_9": "45",
+     "amount_14": "",
+     "unit": "g",
+     "notes": ""
+    },
+    {
+     "layer": "topping",
+     "component_id": "",
+     "item": "Cupping pepperoni",
+     "amount_9": "35",
+     "amount_14": "",
+     "unit": "g",
+     "notes": ""
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Cold stracciatella or burrata",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "dollops"
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Cracked black pepper",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "build_id": "p_aperol_prosciutto",
+   "name": "Aperol Spritz & Prosciutto",
+   "status": "idea",
+   "sizes": "9,14",
+   "dough_9": "k_dough_friday",
+   "dough_14": "k_dough_packers_parbake",
+   "description": "Aperol fresh tomato sauce, fresh mozzarella, prosciutto crudo draped after the bake.",
+   "bake_notes": "Bake the crust and cheese only, until the mozzarella bubbles and the crust blisters.",
+   "notes": "",
+   "layers": [
+    {
+     "layer": "base",
+     "component_id": "k_sauce_aperol_spritz",
+     "item": "",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "the sheet uses about ⅓ cup on a 12-inch pie"
+    },
+    {
+     "layer": "cheese",
+     "component_id": "",
+     "item": "Fresh mozzarella, torn and dried",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    },
+    {
+     "layer": "cheese",
+     "component_id": "",
+     "item": "Parmigiano-Reggiano, finely grated",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "a light dusting"
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Prosciutto crudo ribbons",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "drape right out of the oven — never bake it"
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Parmigiano-Reggiano curls",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    }
+   ]
+  },
+  {
+   "build_id": "p_smoky_bourbon_chorizo",
+   "name": "Smoky Bourbon Chorizo",
+   "status": "idea",
+   "sizes": "9,14",
+   "dough_9": "k_dough_friday",
+   "dough_14": "k_dough_packers_parbake",
+   "description": "Smoky bourbon tomato sauce, smoked mozzarella, chorizo and caramelized onion, fresh thyme.",
+   "bake_notes": "",
+   "notes": "From a dishgen.com home-oven recipe for one 14-inch pie; the 9-inch amounts are scaled down by area.",
+   "layers": [
+    {
+     "layer": "base",
+     "component_id": "k_sauce_smoky_bourbon_canned",
+     "item": "",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "a thin layer"
+    },
+    {
+     "layer": "cheese",
+     "component_id": "",
+     "item": "Smoked mozzarella, shredded",
+     "amount_9": "",
+     "amount_14": "8",
+     "unit": "oz",
+     "notes": ""
+    },
+    {
+     "layer": "topping",
+     "component_id": "",
+     "item": "Caramelized yellow onion",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": "1 large onion per 14-inch pie, sliced thin and caramelized"
+    },
+    {
+     "layer": "topping",
+     "component_id": "",
+     "item": "Spicy Spanish chorizo, sliced thin",
+     "amount_9": "",
+     "amount_14": "4",
+     "unit": "oz",
+     "notes": ""
+    },
+    {
+     "layer": "finish",
+     "component_id": "",
+     "item": "Fresh thyme leaves",
+     "amount_9": "",
+     "amount_14": "",
+     "unit": "",
+     "notes": ""
+    }
+   ]
+  }
+ ]
+}

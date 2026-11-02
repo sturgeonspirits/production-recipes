@@ -1,4 +1,6 @@
 // Thin wrapper around the Apps Script API (Google Sheet backend).
+// v1.23.0 (2026-11-02): Kitchen module — getKitchen, saveKitchenRecipe,
+// deleteKitchenRecipe, savePizzaBuild, deletePizzaBuild.
 // v1.21.0 (2026-08-13): ferments are their own records — addFerment/
 // updateFerment/deleteFerment, and replaceReadings/replaceAdditions now take a
 // ferment_id where they used to take a run_id.
@@ -176,7 +178,30 @@ window.API = (function () {
     return getJSON(url + "?tilt=" + encodeURIComponent(urlOrId));
   }
 
+  // ----- Kitchen module (v1.23.0) -----
+  // One read returns every kitchen recipe (with ingredients) and every pizza
+  // build (with layers). Saves send the parent and its children together; the
+  // server bumps the version and returns it.
+  async function getKitchen() {
+    const data = await getJSON(url + "?kitchen=1");
+    if (data && data.error) throw new Error(data.error);
+    return { recipes: data.recipes || [], builds: data.builds || [] };
+  }
+  async function saveKitchenRecipe(recipe, ingredients) {
+    return post({ action: "save_kitchen_recipe", recipe, ingredients });
+  }
+  async function deleteKitchenRecipe(kitchenId) {
+    return post({ action: "delete_kitchen_recipe", kitchen_id: kitchenId });
+  }
+  async function savePizzaBuild(build, layers) {
+    return post({ action: "save_pizza_build", build, layers });
+  }
+  async function deletePizzaBuild(buildId) {
+    return post({ action: "delete_pizza_build", build_id: buildId });
+  }
+
   return {
+    getKitchen, saveKitchenRecipe, deleteKitchenRecipe, savePizzaBuild, deletePizzaBuild,
     demoMode, login, logout,
     getAllRecipes, getRecipe, updateRecipeField, updateRecipeFields, replaceIngredients, addRecipe, deleteRecipe,
     getAllMashes, getMash, addMash, updateMashField, updateMashFields, replaceMashComponents, deleteMash,

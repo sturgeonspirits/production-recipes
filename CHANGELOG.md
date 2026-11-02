@@ -3,6 +3,43 @@
 All notable changes to this project are logged here. Each code file also
 carries a one-line version header at the top pointing back to this file.
 
+## v1.23.0 - 2026-11-02
+- **Kitchen module.** A new Kitchen page (linked from the home header) for the
+  pizza program, kept entirely apart from the product recipes and the TTB
+  tracker. Two sections:
+  - **Components** — doughs, sauces & bases, toppings & finishes. Each has
+    ingredients (with optional sections), a method, notes, yield, per-pie
+    portions, cook/bake and holding. Recipes that are versions of one thing
+    (Smoky Bourbon fresh vs canned) share a *family* and link to each other.
+  - **Pizzas** — builds that name a dough for 9″ and one for 14″ and list
+    sauce/base, cheese, toppings and after-the-oven lines. A line can point at
+    a component; leave its amounts blank and it uses that component's portion.
+    Status: On menu / Special / Idea / Retired.
+- **Scaling, display only.** Dough scales by ball count × ball weight (chips
+  for 200 g and 470 g), sized so the ingredients add up to exactly the target
+  weight; hydration and salt are computed from the grams. Everything else
+  scales by batches, with an "enough for N pies at 9″/14″" helper. Amounts
+  are stored as typed ("1 1/2", "5-6", "pinch") and only scaled on screen;
+  words print as written. 14″ amounts default to the 9″ amount × 2.42 (pie
+  area) unless typed.
+- **Print sheets.** Recipe pages print a one-page kitchen sheet at the batch on
+  screen: info strip, checkbox ingredient list with hold-back splits, numbered
+  method, notes, as many "changes for next time" lines as fit, and a footer
+  with version, last-updated and printed dates (on every page). Pizza pages
+  print a station card for one size or both side by side.
+- **Versions.** Every save bumps the record's version and stamps the date
+  server-side.
+- **Starter import.** data/kitchen_seed.json holds 15 recipes and 8 pizza
+  ideas transcribed from the kitchen PDFs (built by data/make_kitchen_seed.py).
+  An empty Kitchen page offers a one-time "Import starter recipes" button.
+- Backend: four auto-created tabs (KitchenRecipes, KitchenIngredients,
+  PizzaBuilds, PizzaLayers), `?kitchen=1`, and save/delete actions for
+  recipes and builds. Amount columns are forced to plain text so Sheets can't
+  turn "1/2" into a date. Requires an Apps Script redeploy; no migration.
+- Tests: test/kitchen_math.js, test/kitchen_backend.js (Code.gs against an
+  in-memory sheet via test/fake_apps_script.js), test/smoke_kitchen.js
+  (Playwright, end to end).
+
 ## v1.22.3 - 2026-10-18
 - **Batch worksheet replaces the scale calculator.** Scaling now produces a
   clearly non-destructive production version; there is no longer an option to

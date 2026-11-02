@@ -1,0 +1,53 @@
+<!-- v1.23.0 (2026-11-02): Kitchen module — pizza components and pizza creations. Full history: CHANGELOG.md -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kitchen — Sturgeon Spirits</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#7E613F">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="icons/site.webmanifest">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="kitchen-page">
+<header class="top">
+  <a href="index.html" class="back" aria-label="Back to product recipes">&larr;</a>
+  <h1>Kitchen</h1>
+</header>
+<main>
+  <div id="demo-banner" class="demo-banner" style="display:none">
+    Demo mode — read-only. Add your Apps Script URL to <code>js/config.js</code> to enable editing.
+  </div>
+
+  <div class="seg" role="tablist" aria-label="Kitchen sections">
+    <button type="button" role="tab" data-tab="components" id="tab-components">Components</button>
+    <button type="button" role="tab" data-tab="pizzas" id="tab-pizzas">Pizzas</button>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search…" autocomplete="off">
+  </div>
+
+  <div class="filters">
+    <label class="alc-toggle" id="show-all-label">
+      <input type="checkbox" id="show-all">
+      <span class="dot"></span><span id="show-all-text">Show archived</span>
+    </label>
+    <button class="secondary" id="new-btn">+ New component</button>
+  </div>
+
+  <div id="result-count" class="result-count"></div>
+  <div id="list"><div class="empty-state">Loading…</div></div>
+</main>
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/api.js"></script>
+<script src="js/units.js"></script>
+<script src="js/kitchen.js"></script>
+<script src="js/kitchen-app.js"></script>
+</body>
+</html>

@@ -249,6 +249,31 @@ batches. *Compare runs* covers the still side — date, still, which wash, wash
 ABV, hearts yield, proof gallons and recovery. Both are purely front-end — no
 extra sheet or backend call.
 
+## Kitchen module (v1.23.0)
+
+Pizza doughs, sauces, bases and toppings, plus the pizzas built from them, on
+their own page (`kitchen.html`, linked from the home header as **Kitchen →**).
+Nothing here touches the product Recipes tab or the TTB tracker.
+
+**Setup:** redeploy the Apps Script (Deploy > Manage deployments > edit > New
+version). The four tabs — `KitchenRecipes`, `KitchenIngredients`,
+`PizzaBuilds`, `PizzaLayers` — are created automatically the first time the
+Kitchen page loads. On an empty kitchen, tap **Import starter recipes** once to
+load the recipes transcribed from the printed PDFs (`data/kitchen_seed.json`).
+
+**Using it:**
+- A recipe opens in a read-only view scaled to what you're making — dough by
+  ball count × ball weight, everything else by batches (or "enough for N pies").
+  The last scale you used is remembered on that device.
+- **Print** prints a one-page kitchen sheet at exactly that scale, with the
+  version and date in the footer. Cook from the paper, pencil in changes, then
+  tap **Edit** and enter them; saving bumps the version so the old sheet is
+  obviously out of date.
+- Pizzas reference components. Leave a sauce line's amounts blank to use the
+  sauce's own portion; leave a 14″ amount blank to scale the 9″ amount by pie
+  area (×2.42). **Print station card** prints one size or both side by side.
+- Write method steps without gram amounts — steps aren't scaled.
+
 ## Data notes
 
 - ABV assumptions: where the real catalog didn't have a number, unflavored

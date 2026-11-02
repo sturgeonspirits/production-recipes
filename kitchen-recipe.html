@@ -1,0 +1,109 @@
+<!-- v1.23.0 (2026-11-02): Kitchen module — one dough, sauce, base or topping: scaled view, editor, and a one-page print sheet. Full history: CHANGELOG.md -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kitchen Recipe — Sturgeon Spirits</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#7E613F">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="icons/site.webmanifest">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="kitchen-page has-action-bar">
+<header class="top">
+  <a href="kitchen.html" class="back" aria-label="Back to the kitchen">&larr;</a>
+  <h1 id="title">Kitchen Recipe</h1>
+</header>
+<main>
+  <div id="demo-banner" class="demo-banner" style="display:none">
+    Demo mode — changes here won't be saved.
+  </div>
+
+  <!-- Scaled, read-only view (what you cook from) -->
+  <section id="view" hidden></section>
+
+  <!-- Editor (the record) -->
+  <section id="edit" hidden>
+    <div class="card">
+      <div class="field"><label for="f-name">Name</label><input type="text" id="f-name" autocomplete="off" placeholder="e.g. Garlic Vodka Red"></div>
+      <div class="grid-2">
+        <div class="field"><label for="f-kind">Kind</label><select id="f-kind"></select></div>
+        <div class="field"><label for="f-status">Status</label>
+          <select id="f-status"><option value="active">Active</option><option value="archived">Archived (kept for the record)</option></select></div>
+        <div class="field"><label for="f-family">Family <button type="button" class="info-btn" aria-label="About Family" aria-expanded="false" data-tip="Recipes that are versions of the same thing share a family — e.g. Smoky Bourbon Tomato made with fresh tomatoes or with canned. The page links the versions together.">?</button></label><input type="text" id="f-family" list="family-options" autocomplete="off" placeholder="optional"></div>
+        <div class="field"><label for="f-variant">Variant <button type="button" class="info-btn" aria-label="About Variant" aria-expanded="false" data-tip="What makes this version different, e.g. &quot;Fresh tomatoes&quot; or &quot;Canned San Marzano&quot;. Shown after the name.">?</button></label><input type="text" id="f-variant" autocomplete="off" placeholder="optional"></div>
+      </div>
+      <datalist id="family-options"></datalist>
+    </div>
+
+    <div class="card">
+      <h2>Yield &amp; portions</h2>
+      <div class="grid-2">
+        <div class="field"><label for="f-yield-qty">Batch makes <button type="button" class="info-btn" aria-label="About Batch makes" aria-expanded="false" data-tip="What the ingredient amounts below make. A number or a range: 20, 64-68, 1 1/2. For dough, the number of balls.">?</button></label><input type="text" id="f-yield-qty" inputmode="decimal" placeholder="e.g. 64-68"></div>
+        <div class="field"><label for="f-yield-unit">Unit</label><input type="text" id="f-yield-unit" placeholder="oz, cups, balls, pies…"></div>
+        <div class="field dough-only"><label for="f-ball-weight">Dough ball weight (g) <button type="button" class="info-btn" aria-label="About Dough ball weight" aria-expanded="false" data-tip="The ball weight the amounts below are written for. On the recipe page you can scale to any count and weight — 30 × 200 g for Friday, 10 × 470 g for Packers.">?</button></label><input type="number" step="any" inputmode="decimal" id="f-ball-weight"></div>
+        <div class="field not-dough"><label for="f-portion-9">Portion per 9″ pie</label><input type="text" id="f-portion-9" inputmode="decimal" placeholder="e.g. 2"></div>
+        <div class="field not-dough"><label for="f-portion-14">Portion per 14″ pie <button type="button" class="info-btn" aria-label="About 14 inch portion" aria-expanded="false" data-tip="Leave blank to scale the 9″ portion by pie area (about 2.4×). Fill it in if you portion 14″ pies differently.">?</button></label><input type="text" id="f-portion-14" inputmode="decimal" placeholder="blank = 9″ × 2.4"></div>
+        <div class="field not-dough"><label for="f-portion-unit">Portion unit</label><input type="text" id="f-portion-unit" placeholder="oz, g, tbsp…"></div>
+        <div class="field"><label for="f-bake-temp">Bake / cook temp</label><input type="text" id="f-bake-temp" placeholder="e.g. 750–760°F deck"></div>
+        <div class="field"><label for="f-bake-time">Bake / cook time</label><input type="text" id="f-bake-time" placeholder="e.g. 120–150 sec"></div>
+        <div class="field"><label for="f-holding">Holding &amp; storage</label><input type="text" id="f-holding" placeholder="e.g. Below 40°F; best made a day ahead"></div>
+        <div class="field"><label for="f-source">Source</label><input type="text" id="f-source" placeholder="Where this came from"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Ingredients</h2>
+      <div id="ing-body" class="ing-list"></div>
+      <button class="btn-add" id="add-ing" type="button">+ Add ingredient</button>
+      <p class="hint">Amounts can be a number, a fraction or a range (2530, 1 1/2, 5-6). Words like “pinch” or “to taste” are printed as written and not scaled. Use Section to group lines (“Aromatics”, “Finish off heat”).<span class="dough-only"> Hold back % splits a line on the printed sheet — flour held back for the fold sets, say.</span></p>
+    </div>
+
+    <div class="card">
+      <h2>Method</h2>
+      <textarea id="f-method" rows="10" placeholder="One step per line. Start a step with a short title and a colon to bold it:&#10;Bloom: Stir the yeast and salt into the warm water…"></textarea>
+      <p class="hint">Steps aren't scaled, so describe amounts as fractions of the batch (“half the flour”) rather than grams.</p>
+    </div>
+
+    <div class="card">
+      <h2>Notes</h2>
+      <textarea id="f-notes" rows="4"></textarea>
+    </div>
+
+    <details class="section danger-section" id="delete-section">
+      <summary>Delete this recipe</summary>
+      <div class="section-body">
+        <p class="hint" id="delete-hint">Permanently removes this recipe and its ingredients.</p>
+        <button class="btn-danger" id="delete-btn" type="button">Delete this recipe</button>
+        <div id="delete-confirm" class="delete-confirm" style="display:none">
+          <p class="delete-confirm-text">Are you sure? This permanently deletes <strong id="delete-name"></strong>.</p>
+          <div class="delete-confirm-actions">
+            <button class="secondary" id="delete-cancel" type="button">Cancel</button>
+            <button class="btn-danger" id="delete-yes" type="button">Yes, delete permanently</button>
+          </div>
+        </div>
+      </div>
+    </details>
+  </section>
+</main>
+
+<!-- Rendered from the current view (scaled amounts); only visible when printing. -->
+<div id="print-sheet" class="print-sheet"></div>
+
+<div class="action-bar no-print">
+  <div class="bar-inner" id="bar"></div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/api.js"></script>
+<script src="js/units.js"></script>
+<script src="js/infotips.js"></script>
+<script src="js/kitchen.js"></script>
+<script src="js/kitchen-recipe-app.js"></script>
+</body>
+</html>

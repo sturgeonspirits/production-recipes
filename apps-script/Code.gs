@@ -114,6 +114,15 @@
  * an ABV from incomplete ingredient data. Recipe-child replacement preserves
  * unrelated spreadsheet rows and formulas, and newly written production dates
  * use ISO order. See CHANGELOG.md.
+ *
+ * v1.23.0 (2026-11-02): Kitchen module — pizza doughs, sauces, bases and
+ * toppings, plus the pizzas built from them. Four new tabs, all auto-created on
+ * first use: KitchenRecipes, KitchenIngredients, PizzaBuilds, PizzaLayers.
+ * Adds a `?kitchen=1` GET and the save_kitchen_recipe / delete_kitchen_recipe /
+ * save_pizza_build / delete_pizza_build POST actions. Saves bump a per-record
+ * version and stamp updated_date server-side (the printed sheets show both).
+ * Nothing here touches the Recipes or distilling tabs. No migration needed —
+ * redeploy and the tabs appear the first time the Kitchen page loads.
  */
 
 // The one and only database for this webapp. Bind explicitly by ID so the
@@ -157,6 +166,25 @@ DISTILL_HEADERS[RUN_ADDITIONS_SHEET] = ["addition_id","ferment_id","run_id","mas
 // the recovery math keeps reading one shape.
 DISTILL_HEADERS[FERMENTS_SHEET] = ["ferment_id","mash_id","name","start_date","end_date","status","batch_volume","volume_unit","og","fg","wash_abv","yeast_strain","pitch_rate","ferment_temp","tilt_sheet_url","notes"];
 DISTILL_HEADERS[USERS_SHEET] = ["username","salt","password_hash","display_name","active"];
+
+// ----- Kitchen module tabs (v1.23.0) -----
+// Pizza doughs, sauces, bases and toppings ("components"), and the pizzas built
+// from them ("builds"). Kept entirely apart from Recipes/Ingredients so food
+// never shows up in the product list or the TTB tracker. All four tabs are
+// auto-created by getSheet_ the first time they're written to (the header rows
+// ride along in DISTILL_HEADERS, which is what getSheet_ reads).
+const KITCHEN_RECIPES_SHEET = "KitchenRecipes";
+const KITCHEN_INGREDIENTS_SHEET = "KitchenIngredients";
+const PIZZA_BUILDS_SHEET = "PizzaBuilds";
+const PIZZA_LAYERS_SHEET = "PizzaLayers";
+// version / updated_date are stamped by the server on every save — the print
+// footer reads them, so a sheet taped to the wall can be checked against the app.
+DISTILL_HEADERS[KITCHEN_RECIPES_SHEET] = ["kitchen_id","name","family","variant","kind","status","yield_qty","yield_unit","ball_weight_g","portion_9","portion_14","portion_unit","bake_temp","bake_time","holding","method","notes","source","version","updated_date"];
+DISTILL_HEADERS[KITCHEN_INGREDIENTS_SHEET] = ["kitchen_id","line","section","name","amount","unit","reserve_pct","notes"];
+// dough_9 / dough_14: a 9" Pizza Friday pie and a 14" Packers pie use different
+// doughs (55% vs the 68% par-bake), so a build names one per size.
+DISTILL_HEADERS[PIZZA_BUILDS_SHEET] = ["build_id","name","status","sizes","dough_9","dough_14","description","bake_notes","notes","version","updated_date"];
+DISTILL_HEADERS[PIZZA_LAYERS_SHEET] = ["build_id","line","layer","component_id","item","amount_9","amount_14","unit","notes"];
 
 // Handles are memoized for the life of one execution (v1.15.0). Every
 // getSheet_ call used to re-open the spreadsheet by id; a single ?mash= read
@@ -432,6 +460,92 @@ function jsonOut_(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+// ================= Kitchen module helpers (v1.23.0) =================
+
+// Columns that hold kitchen amounts as typed — "1/2", "1 1/2", "5-6", "2-2.5".
+// Sheets would otherwise read "1/2" as January 2nd and "5-6" as May 6th, so
+// these columns are forced to plain text before every write.
+const KITCHEN_TEXT_COLUMNS = {};
+KITCHEN_TEXT_COLUMNS[KITCHEN_RECIPES_SHEET] = ["yield_qty", "portion_9", "portion_14", "bake_temp", "bake_time", "updated_date"];
+KITCHEN_TEXT_COLUMNS[KITCHEN_INGREDIENTS_SHEET] = ["amount", "unit"];
+KITCHEN_TEXT_COLUMNS[PIZZA_BUILDS_SHEET] = ["sizes", "updated_date"];
+KITCHEN_TEXT_COLUMNS[PIZZA_LAYERS_SHEET] = ["amount_9", "amount_14", "unit"];
+
+function ensureTextColumns_(sheet, names) {
+  const headers = sheet.getDataRange().getValues()[0] || [];
+  (names || []).forEach(function (n) {
+    const idx = headers.indexOf(n);
+    if (idx !== -1) sheet.getRange(1, idx + 1, sheet.getMaxRows(), 1).setNumberFormat("@");
+  });
+}
+
+function todayISO_() {
+  return Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd");
+}
+
+// A Date cell (a value typed straight into the sheet, say) becomes yyyy-MM-dd
+// so the app and the print footer never show a raw timestamp.
+function normKitchenDates_(obj) {
+  Object.keys(obj).forEach(function (k) {
+    if (Object.prototype.toString.call(obj[k]) === "[object Date]") {
+      obj[k] = isNaN(obj[k].getTime()) ? "" :
+        Utilities.formatDate(obj[k], Session.getScriptTimeZone(), "yyyy-MM-dd");
+    }
+  });
+  return obj;
+}
+
+function rowToObject_(found) {
+  const out = {};
+  found.headers.forEach(function (h, idx) { out[h] = found.row[idx]; });
+  return out;
+}
+
+function byLine_(a, b) { return (Number(a.line) || 0) - (Number(b.line) || 0); }
+
+function readKitchen_() {
+  const recipes = sheetToObjects_(getSheet_(KITCHEN_RECIPES_SHEET)).map(normKitchenDates_);
+  const ingredients = sheetToObjects_(getSheet_(KITCHEN_INGREDIENTS_SHEET)).map(normKitchenDates_);
+  const builds = sheetToObjects_(getSheet_(PIZZA_BUILDS_SHEET)).map(normKitchenDates_);
+  const layers = sheetToObjects_(getSheet_(PIZZA_LAYERS_SHEET)).map(normKitchenDates_);
+  const rById = {};
+  recipes.forEach(function (r) { r.ingredients = []; rById[r.kitchen_id] = r; });
+  ingredients.forEach(function (i) { if (rById[i.kitchen_id]) rById[i.kitchen_id].ingredients.push(i); });
+  recipes.forEach(function (r) { r.ingredients.sort(byLine_); });
+  const bById = {};
+  builds.forEach(function (b) { b.layers = []; bById[b.build_id] = b; });
+  layers.forEach(function (l) { if (bById[l.build_id]) bById[l.build_id].layers.push(l); });
+  builds.forEach(function (b) { b.layers.sort(byLine_); });
+  return { recipes: recipes, builds: builds };
+}
+
+// Create or overwrite one parent row (a kitchen recipe or a pizza build) by id.
+// Fields the client didn't send keep their stored value; version and
+// updated_date always come from here.
+function saveKitchenParent_(sheetName, idCol, obj) {
+  if (!obj || !obj[idCol]) return { error: "missing " + idCol };
+  if (!String(obj.name || "").trim()) return { error: "a name is required" };
+  const sheet = getSheet_(sheetName);
+  ensureColumns_(sheet, DISTILL_HEADERS[sheetName]);
+  ensureTextColumns_(sheet, KITCHEN_TEXT_COLUMNS[sheetName]);
+  if (sheetName === KITCHEN_RECIPES_SHEET) ensureTextColumns_(getSheet_(KITCHEN_INGREDIENTS_SHEET), KITCHEN_TEXT_COLUMNS[KITCHEN_INGREDIENTS_SHEET]);
+  if (sheetName === PIZZA_BUILDS_SHEET) ensureTextColumns_(getSheet_(PIZZA_LAYERS_SHEET), KITCHEN_TEXT_COLUMNS[PIZZA_LAYERS_SHEET]);
+
+  const found = findRowById_(sheet, obj[idCol], idCol);
+  const headers = found ? found.headers : (sheet.getDataRange().getValues()[0] || []);
+  const version = found ? (Number(rowToObject_(found).version) || 0) + 1 : 1;
+  const today = todayISO_();
+  const row = headers.map(function (h, idx) {
+    if (h === "version") return version;
+    if (h === "updated_date") return today;
+    if (Object.prototype.hasOwnProperty.call(obj, h)) return obj[h] === null || obj[h] === undefined ? "" : obj[h];
+    return found ? found.row[idx] : "";
+  });
+  if (found) sheet.getRange(found.rowIndex, 1, 1, row.length).setValues([row]);
+  else sheet.getRange(sheet.getLastRow() + 1, 1, 1, row.length).setValues([row]);
+  return { id: obj[idCol], version: version, updated_date: today, created: !found };
+}
+
 // ================= Access control (v1.9.0) =================
 // Passwords are stored only as salted SHA-256 hashes in the Users tab. Sessions
 // are opaque tokens kept in Script Properties with an expiry — nothing sensitive
@@ -557,6 +671,14 @@ function doGet(e) {
         );
       });
       return jsonOut_({ mashes: Object.values(byId) });
+    }
+
+    // ----- Kitchen read (v1.23.0) -----
+    // The whole kitchen in one response: a few dozen recipes and builds at
+    // most, and every kitchen page needs the cross-references (which pizzas
+    // use this sauce, which dough a build calls for), so one read beats many.
+    if (params.kitchen) {
+      return jsonOut_(readKitchen_());
     }
 
     if (params.recipe) {
@@ -882,6 +1004,63 @@ function doPost(e) {
         };
       }));
       logChange_(body.mash_id || "", "additions " + keyVal, "", JSON.stringify(body.additions), "replace_additions");
+      return jsonOut_({ ok: true });
+    }
+
+    // ============ Kitchen module actions (v1.23.0) ============
+    // Each save writes the parent row and replaces its child rows in one
+    // request, and the server — not the browser — bumps the version and stamps
+    // the date, so two devices can't both print "version 3" for different text.
+
+    if (action === "save_kitchen_recipe") {
+      const res = saveKitchenParent_(KITCHEN_RECIPES_SHEET, "kitchen_id", body.recipe);
+      if (res.error) return jsonOut_({ error: res.error });
+      replaceObjectsById_(getSheet_(KITCHEN_INGREDIENTS_SHEET), res.id, "kitchen_id",
+        (body.ingredients || []).map(function (ing, i) {
+          return {
+            kitchen_id: res.id, line: i + 1, section: ing.section, name: ing.name,
+            amount: ing.amount, unit: ing.unit, reserve_pct: ing.reserve_pct, notes: ing.notes
+          };
+        }));
+      logChange_(res.id, res.created ? "*new kitchen recipe*" : "kitchen recipe v" + res.version, "",
+        JSON.stringify({ recipe: body.recipe, ingredients: body.ingredients }), "save_kitchen_recipe");
+      return jsonOut_({ ok: true, kitchen_id: res.id, version: res.version, updated_date: res.updated_date, created: res.created });
+    }
+
+    if (action === "delete_kitchen_recipe") {
+      const sheet = getSheet_(KITCHEN_RECIPES_SHEET);
+      const found = findRowById_(sheet, body.kitchen_id, "kitchen_id");
+      if (!found) return jsonOut_({ error: "kitchen recipe not found" });
+      const old = rowToObject_(found);
+      deleteRowsById_(getSheet_(KITCHEN_INGREDIENTS_SHEET), body.kitchen_id, "kitchen_id");
+      sheet.deleteRow(found.rowIndex);
+      logChange_(body.kitchen_id, "*delete kitchen recipe*", JSON.stringify(old), "", "delete_kitchen_recipe");
+      return jsonOut_({ ok: true });
+    }
+
+    if (action === "save_pizza_build") {
+      const res = saveKitchenParent_(PIZZA_BUILDS_SHEET, "build_id", body.build);
+      if (res.error) return jsonOut_({ error: res.error });
+      replaceObjectsById_(getSheet_(PIZZA_LAYERS_SHEET), res.id, "build_id",
+        (body.layers || []).map(function (l, i) {
+          return {
+            build_id: res.id, line: i + 1, layer: l.layer, component_id: l.component_id, item: l.item,
+            amount_9: l.amount_9, amount_14: l.amount_14, unit: l.unit, notes: l.notes
+          };
+        }));
+      logChange_(res.id, res.created ? "*new pizza build*" : "pizza build v" + res.version, "",
+        JSON.stringify({ build: body.build, layers: body.layers }), "save_pizza_build");
+      return jsonOut_({ ok: true, build_id: res.id, version: res.version, updated_date: res.updated_date, created: res.created });
+    }
+
+    if (action === "delete_pizza_build") {
+      const sheet = getSheet_(PIZZA_BUILDS_SHEET);
+      const found = findRowById_(sheet, body.build_id, "build_id");
+      if (!found) return jsonOut_({ error: "pizza build not found" });
+      const old = rowToObject_(found);
+      deleteRowsById_(getSheet_(PIZZA_LAYERS_SHEET), body.build_id, "build_id");
+      sheet.deleteRow(found.rowIndex);
+      logChange_(body.build_id, "*delete pizza build*", JSON.stringify(old), "", "delete_pizza_build");
       return jsonOut_({ ok: true });
     }
 
